@@ -1,14 +1,21 @@
-using Microsoft.OpenApi.Models;
+using Guitars.API.Endpoints;
+using Guitars.Infrastructure;
+
+var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
 });
+
+// configure dependency injection for Infrastructure project
+builder.Services.AddInfrastructure(configuration);
 
 var app = builder.Build();
 
@@ -21,8 +28,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseExceptionHandler("/errors");
 
-app.MapControllers();
+app.MapErrorEndpoints();
 
 app.Run();

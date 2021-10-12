@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guitars.API", "Guitars.API\Guitars.API.csproj", "{841818CF-EED2-4C3F-A757-6C6B0164BCF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guitars.API", "Guitars.API\Guitars.API.csproj", "{841818CF-EED2-4C3F-A757-6C6B0164BCF9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3A9E10DD-4DC8-4A11-B790-45ED76A14D4E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9A6C9F9C-0340-4B00-B64F-C554DA6317E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guitars.Application", "Guitars.Application\Guitars.Application.csproj", "{01AC3F2D-8E3D-467E-B004-B37548C30621}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guitars.Application", "Guitars.Application\Guitars.Application.csproj", "{01AC3F2D-8E3D-467E-B004-B37548C30621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guitars.Domain", "Guitars.Domain\Guitars.Domain.csproj", "{BF45528C-38EB-4BAD-A6BC-58B9BCE4BA06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guitars.Domain", "Guitars.Domain\Guitars.Domain.csproj", "{BF45528C-38EB-4BAD-A6BC-58B9BCE4BA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{943B06A4-B98E-4617-A910-9F3DB3B8BDB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Guitars.Infrastructure", "Guitars.Infrastructure\Guitars.Infrastructure.csproj", "{943B06A4-B98E-4617-A910-9F3DB3B8BDB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BC3E89D-C57E-49CB-AE10-9A1CCB65261A}"
 	ProjectSection(SolutionItems) = preProject

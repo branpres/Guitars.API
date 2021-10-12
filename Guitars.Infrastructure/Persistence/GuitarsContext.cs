@@ -1,7 +1,7 @@
 ﻿using Guitars.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence
+namespace Guitars.Infrastructure.Persistence
 {
     public class GuitarsContext : DbContext
     {
@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // don't like this, but not sure how to get around it atm
-            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitar;User Id=demouser;Password=test123;port=3306");
+            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitar;User Id=testuser;Password=test123;port=3306");
         }
     }
 }

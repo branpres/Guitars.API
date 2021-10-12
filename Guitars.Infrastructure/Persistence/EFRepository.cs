@@ -1,7 +1,7 @@
 ﻿using Guitars.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence
+namespace Guitars.Infrastructure.Persistence
 {
     public abstract class EFRepository : IRepository
     {

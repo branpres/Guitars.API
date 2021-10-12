@@ -1,7 +1,7 @@
 ﻿using Guitars.Application.Interfaces;
 using Guitars.Domain.Models;
 
-namespace Infrastructure.Persistence
+namespace Guitars.Infrastructure.Persistence
 {
     public class InMemoryGuitarRepository : IGuitarRepository
     {

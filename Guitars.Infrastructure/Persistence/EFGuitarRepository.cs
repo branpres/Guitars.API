@@ -2,7 +2,7 @@
 using Guitars.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence
+namespace Guitars.Infrastructure.Persistence
 {
     public class EFGuitarRepository : EFRepository, IGuitarRepository
     {
