@@ -1,9 +1,10 @@
-﻿using Guitars.Domain.Models;
+﻿using Guitars.Application.Interfaces;
+using Guitars.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Guitars.Infrastructure.Persistence
 {
-    public class GuitarsContext : DbContext
+    public class GuitarsContext : DbContext, IGuitarsContext
     {
         public GuitarsContext() { }
 
@@ -16,7 +17,12 @@ namespace Guitars.Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // don't like this, but not sure how to get around it atm
-            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitar;User Id=testuser;Password=test123;port=3306");
+            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;User Id=testuser;Password=test123;port=3306");
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -10,16 +10,8 @@ namespace Guitars.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration["RepositoryImplementation"] == "EF")
-            {
-                services.AddDbContext<GuitarsContext>(options => options.UseMySQL(configuration.GetConnectionString("Guitars")));
-                services.AddScoped<DbContext, GuitarsContext>();
-                services.AddScoped<IGuitarRepository, EFGuitarRepository>();
-            }
-            else
-            {
-                services.AddScoped<IGuitarRepository, InMemoryGuitarRepository>();
-            }
+            services.AddDbContext<GuitarsContext>(options => options.UseMySQL(configuration.GetConnectionString("Guitars")));
+            services.AddScoped<IGuitarsContext>(provider => provider.GetService<GuitarsContext>());
         }
     }
 }

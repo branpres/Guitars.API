@@ -1,4 +1,5 @@
 using Guitars.API.Endpoints;
+using Guitars.Application;
 using Guitars.Infrastructure;
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
@@ -14,7 +15,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
 });
 
-// configure dependency injection for Infrastructure project
+// configure dependency injection for projects
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(configuration);
 
 var app = builder.Build();
