@@ -19,7 +19,7 @@ namespace Guitars.API.Endpoints
                 return Results.BadRequest(new { errors = validationException.Errors.Select(x => x.ErrorMessage).ToList() });
             }
 
-            // log the error
+            // TODO: log the error
 
             return Results.Content($"<div>An error occurred!</div><div>Error Message: {context.Error.Message}</div><div>Stack Trace: {context.Error.StackTrace}</div>", "text/html");
         }
