@@ -40,8 +40,6 @@ namespace Guitars.Domain.Models
                     GuitarStrings.Add(new GuitarString(number, gauge, tuning));
                 }
             }
-
-            Updated = DateTime.UtcNow;
         }
 
         public void Tune(int number, string tuning)
@@ -50,7 +48,6 @@ namespace Guitars.Domain.Models
             if (guitarString != null)
             {
                 guitarString.Tune(tuning);
-                Updated = DateTime.UtcNow;
             }
         }
     }

@@ -20,7 +20,6 @@ namespace Guitars.Domain.Models
         public void ReString(string gauge)
         {
             Gauge = gauge;
-            Updated = DateTime.UtcNow;
         }
 
         public void Tune(string tuning)
