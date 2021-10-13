@@ -10,7 +10,15 @@ namespace Guitars.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<GuitarsContext>(options => options.UseMySQL(configuration.GetConnectionString("Guitars")));
+            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<GuitarsContext>(options => options.UseInMemoryDatabase("Guitars"));
+            }
+            else
+            {
+                services.AddDbContext<GuitarsContext>(options => options.UseMySQL(configuration.GetConnectionString("Guitars")));
+            }
+                        
             services.AddScoped<IGuitarsContext>(provider => provider.GetService<GuitarsContext>());
         }
     }

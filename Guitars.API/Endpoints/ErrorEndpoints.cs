@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Guitars.API.Endpoints
 {
@@ -13,8 +14,14 @@ namespace Guitars.API.Endpoints
         {
             var context = httpContext.Features.Get<IExceptionHandlerFeature>();
 
-            // I am aware this isn't actually logging anything. I was mainly interested in seeing how to use this type of error handling.
-            return Results.Json(new { ErrorMessage = context.Error.Message, context.Error.StackTrace });
+            if (context.Error is ValidationException validationException)
+            {
+                return Results.BadRequest(new { errors = validationException.Errors.Select(x => x.ErrorMessage).ToList() });
+            }
+
+            // log the error
+
+            return Results.Content($"<div>An error occurred!</div><div>Error Message: {context.Error.Message}</div><div>Stack Trace: {context.Error.StackTrace}</div>", "text/html");
         }
     }
 }
