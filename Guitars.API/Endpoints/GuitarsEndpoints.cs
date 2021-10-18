@@ -33,34 +33,19 @@ namespace Guitars.API.Endpoints
         internal async static Task<IResult> ReadGuitarAsync(ISender mediator, int id)
         {
             var guitarDto = await mediator.Send(new ReadGuitarQuery(id));
-            if (guitarDto != null)
-            {
-                return Results.Ok(guitarDto);
-            }
-
-            return Results.NotFound(id);
+            return Results.Ok(guitarDto);
         }
 
         internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitarCommand updateGuitarCommand)
         {
-            var result = await mediator.Send(updateGuitarCommand);
-            if (result != 0)
-            {
-                return Results.NoContent();
-            }
-
-            return Results.NotFound(updateGuitarCommand.Id);
+            await mediator.Send(updateGuitarCommand);
+            return Results.NoContent();
         }
 
         internal async static Task<IResult> DeleteGuitarAsync(ISender mediator, int id)
         {
-            var result = await mediator.Send(new DeleteGuitarCommand(id));
-            if (result != 0)
-            {
-                return Results.NoContent();
-            }
-
-            return Results.NotFound(id);
+            await mediator.Send(new DeleteGuitarCommand(id));
+            return Results.NoContent();
         }
     }
 }

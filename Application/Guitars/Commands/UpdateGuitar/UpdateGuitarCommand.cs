@@ -1,9 +1,10 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using MediatR;
 
 namespace Application.Guitars.Commands.UpdateGuitar
 {
-    public class UpdateGuitarCommand : IRequest<int>
+    public class UpdateGuitarCommand : IRequest
     {
         public int Id { get; set; }
 
@@ -12,7 +13,7 @@ namespace Application.Guitars.Commands.UpdateGuitar
         public string Model { get; set; }
     }
 
-    public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand, int>
+    public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand>
     {
         private readonly IGuitarsContext _guitarContext;
 
@@ -21,17 +22,19 @@ namespace Application.Guitars.Commands.UpdateGuitar
             _guitarContext = guitarContext;
         }
 
-        public async Task<int> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
-            if (guitar != null)
+            if (guitar == null)
             {
-                guitar.Make = request.Make;
-                guitar.Model = request.Model;
-                return await _guitarContext.SaveChangesAsync(cancellationToken);
+                throw new NotFoundException(nameof(guitar), request.Id);
             }
 
-            return 0;
+            guitar.Make = request.Make;
+            guitar.Model = request.Model;
+            await _guitarContext.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

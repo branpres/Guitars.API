@@ -1,10 +1,11 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Guitars.Commands.DeleteGuitar
 {
-    public class DeleteGuitarCommand : IRequest<int>
+    public class DeleteGuitarCommand : IRequest
     {
         public DeleteGuitarCommand(int id)
         {
@@ -14,7 +15,7 @@ namespace Application.Guitars.Commands.DeleteGuitar
         public int Id { get; private set; }
     }
 
-    public class DeleteGuitarCommandHandler : IRequestHandler<DeleteGuitarCommand, int>
+    public class DeleteGuitarCommandHandler : IRequestHandler<DeleteGuitarCommand>
     {
         private readonly IGuitarsContext _guitarContext;
 
@@ -23,18 +24,19 @@ namespace Application.Guitars.Commands.DeleteGuitar
             _guitarContext = guitarContext;
         }
 
-        public async Task<int> Handle(DeleteGuitarCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (guitar != null)
+            if (guitar == null)
             {
-                _guitarContext.Guitar.Remove(guitar);
-                return await _guitarContext.SaveChangesAsync(cancellationToken);
+                throw new NotFoundException(nameof(guitar), request.Id);
             }
 
-            return 0;
+            _guitarContext.Guitar.Remove(guitar);
+
+            return Unit.Value;
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Guitars.Queries.ReadGuitar
 {
-    public class ReadGuitarQuery : IRequest<GuitarDto?>
+    public class ReadGuitarQuery : IRequest<GuitarDto>
     {
         public ReadGuitarQuery(int id)
         {
@@ -14,7 +15,7 @@ namespace Application.Guitars.Queries.ReadGuitar
         public int Id { get; private set; }
     }
 
-    public class ReadGuitarQueryHandler : IRequestHandler<ReadGuitarQuery, GuitarDto?>
+    public class ReadGuitarQueryHandler : IRequestHandler<ReadGuitarQuery, GuitarDto>
     {
         private readonly IGuitarsContext _guitarContext;
 
@@ -23,11 +24,16 @@ namespace Application.Guitars.Queries.ReadGuitar
             _guitarContext = guitarContext;
         }
 
-        public async Task<GuitarDto?> Handle(ReadGuitarQuery request, CancellationToken cancellationToken)
+        public async Task<GuitarDto> Handle(ReadGuitarQuery request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            if (guitar == null)
+            {
+                throw new NotFoundException(nameof(guitar), request.Id);
+            }
+
             return guitar?.MapToDto();
         }
     }
