@@ -1,4 +1,4 @@
-﻿namespace Application.Guitars.Queries.ReadAllGuitars
+﻿namespace Application.Guitars.Queries
 {
     public class GuitarsVM
     {

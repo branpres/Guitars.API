@@ -14,7 +14,7 @@ namespace Guitars.API.Endpoints
             app.MapPost("/guitars", CreateGuitarAsync);
             app.MapGet("/guitars", ReallAllGuitarsAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);
-            app.MapPut("guitars", UpdateGuitarAsync);
+            app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
         }
 

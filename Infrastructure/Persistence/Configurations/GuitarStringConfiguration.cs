@@ -8,11 +8,13 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<GuitarString> builder)
         {
+            builder.Property(x => x.Number)
+                .IsRequired()
+                .HasMaxLength(2);
             builder.Property(x => x.Gauge)
                 .IsRequired()
                 .HasMaxLength(5);
             builder.Property(x => x.Tuning)
-                .IsRequired()
                 .HasMaxLength(2);
         }
     }

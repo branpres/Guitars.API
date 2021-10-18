@@ -31,7 +31,6 @@ namespace Domain.Models
             if (guitarString != null)
             {
                 guitarString.ReString(gauge);
-                guitarString.Tune(tuning);
             }
             else
             {
