@@ -1,6 +1,6 @@
 using Guitars.API.Endpoints;
-using Guitars.Application;
-using Guitars.Infrastructure;
+using Application;
+using Infrastructure;
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 

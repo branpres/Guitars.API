@@ -1,6 +1,8 @@
-﻿using Guitars.Application.Guitars.Commands.CreateGuitar;
-using Guitars.Application.Guitars.Queries.ReadAllGuitars;
-using Guitars.Application.Guitars.Queries.ReadGuitar;
+﻿using Application.Guitars.Commands.CreateGuitar;
+using Application.Guitars.Commands.DeleteGuitar;
+using Application.Guitars.Commands.UpdateGuitar;
+using Application.Guitars.Queries.ReadAllGuitars;
+using Application.Guitars.Queries.ReadGuitar;
 using MediatR;
 
 namespace Guitars.API.Endpoints
@@ -12,6 +14,8 @@ namespace Guitars.API.Endpoints
             app.MapPost("/guitars", CreateGuitarAsync);
             app.MapGet("/guitars", ReallAllGuitarsAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);
+            app.MapPut("guitars", UpdateGuitarAsync);
+            app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
         }
 
         internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitarCommand createGuitarCommand)
@@ -32,6 +36,28 @@ namespace Guitars.API.Endpoints
             if (guitarDto != null)
             {
                 return Results.Ok(guitarDto);
+            }
+
+            return Results.NotFound(id);
+        }
+
+        internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitarCommand updateGuitarCommand)
+        {
+            var result = await mediator.Send(updateGuitarCommand);
+            if (result != 0)
+            {
+                return Results.NoContent();
+            }
+
+            return Results.NotFound(updateGuitarCommand.Id);
+        }
+
+        internal async static Task<IResult> DeleteGuitarAsync(ISender mediator, int id)
+        {
+            var result = await mediator.Send(new DeleteGuitarCommand(id));
+            if (result != 0)
+            {
+                return Results.NoContent();
             }
 
             return Results.NotFound(id);
