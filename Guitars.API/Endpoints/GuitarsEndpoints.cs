@@ -3,6 +3,7 @@ using Application.Guitars.Commands.DeleteGuitar;
 using Application.Guitars.Commands.UpdateGuitar;
 using Application.Guitars.Queries.ReadAllGuitars;
 using Application.Guitars.Queries.ReadGuitar;
+using Application.Guitars.Queries.ReadGuitarsFiltered;
 using MediatR;
 
 namespace Guitars.API.Endpoints
@@ -14,6 +15,7 @@ namespace Guitars.API.Endpoints
             app.MapPost("/guitars", CreateGuitarAsync);
             app.MapGet("/guitars", ReallAllGuitarsAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);
+            app.MapGet("/guitars/filtered", ReadGuitarsFiltered);
             app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
         }
@@ -36,6 +38,12 @@ namespace Guitars.API.Endpoints
             return Results.Ok(guitarDto);
         }
 
+        internal async static Task<IResult> ReadGuitarsFiltered(ISender mediator, int? guitarType, int? maxNumberOfStrings, string make, string model)
+        {
+            var guitarsVM = await mediator.Send(new ReadGuitarsFilteredQuery(guitarType, maxNumberOfStrings, make, model));
+            return Results.Ok(guitarsVM);
+        }
+
         internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitarCommand updateGuitarCommand)
         {
             await mediator.Send(updateGuitarCommand);
@@ -46,6 +54,6 @@ namespace Guitars.API.Endpoints
         {
             await mediator.Send(new DeleteGuitarCommand(id));
             return Results.NoContent();
-        }
+        }        
     }
 }

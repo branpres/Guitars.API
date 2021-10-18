@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // don't like this, but not sure how to get around it atm
-            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;User Id=testuser;Password=test123;port=3306");
+            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;Trusted_Connection=True;port=3306");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
