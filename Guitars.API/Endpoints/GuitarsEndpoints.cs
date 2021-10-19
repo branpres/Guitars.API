@@ -1,9 +1,8 @@
 ﻿using Application.Guitars.Commands.CreateGuitar;
 using Application.Guitars.Commands.DeleteGuitar;
 using Application.Guitars.Commands.UpdateGuitar;
-using Application.Guitars.Queries.ReadAllGuitars;
 using Application.Guitars.Queries.ReadGuitar;
-using Application.Guitars.Queries.ReadGuitarsFiltered;
+using Application.Guitars.Queries.ReadGuitars;
 using MediatR;
 
 namespace Guitars.API.Endpoints
@@ -13,9 +12,8 @@ namespace Guitars.API.Endpoints
         internal static void MapGuitarEndpoints(this WebApplication app)
         {
             app.MapPost("/guitars", CreateGuitarAsync);
-            app.MapGet("/guitars", ReallAllGuitarsAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);
-            app.MapGet("/guitars/filtered", ReadGuitarsFiltered);
+            app.MapGet("/guitars", ReallGuitarsAsync);
             app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
         }
@@ -26,23 +24,17 @@ namespace Guitars.API.Endpoints
             return Results.CreatedAtRoute($"/guitars/{id}");
         }
 
-        internal async static Task<IResult> ReallAllGuitarsAsync(ISender mediator)
-        {
-            var guitarsVM = await mediator.Send(new ReadAllGuitarsQuery());
-            return Results.Ok(guitarsVM);
-        }
-
         internal async static Task<IResult> ReadGuitarAsync(ISender mediator, int id)
         {
             var guitarDto = await mediator.Send(new ReadGuitarQuery(id));
             return Results.Ok(guitarDto);
         }
 
-        internal async static Task<IResult> ReadGuitarsFiltered(ISender mediator, int? guitarType, int? maxNumberOfStrings, string make, string model)
+        internal async static Task<IResult> ReallGuitarsAsync(ISender mediator, string filter, int? pageIndex = null, int? pageSize = null)
         {
-            var guitarsVM = await mediator.Send(new ReadGuitarsFilteredQuery(guitarType, maxNumberOfStrings, make, model));
+            var guitarsVM = await mediator.Send(new ReadGuitarsQuery(filter, pageIndex, pageSize));
             return Results.Ok(guitarsVM);
-        }
+        }               
 
         internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitarCommand updateGuitarCommand)
         {

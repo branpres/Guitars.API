@@ -34,7 +34,9 @@ namespace Application.Guitars.Commands.DeleteGuitar
                 throw new NotFoundException(nameof(guitar), request.Id);
             }
 
-            _guitarContext.Guitar.Remove(guitar);
+            guitar.IsDeleted = true;
+            guitar.GuitarStrings.ForEach(x => x.IsDeleted = true);
+            await _guitarContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

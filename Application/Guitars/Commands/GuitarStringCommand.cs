@@ -2,7 +2,7 @@
 
 namespace Application.Guitars.Commands
 {
-    public class GuitarStringCommand : IRequest
+    public abstract class GuitarStringCommand : IRequest
     {
         public GuitarStringCommand(int id, List<GuitarStringDto> guitarStrings)
         {
