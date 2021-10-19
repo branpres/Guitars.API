@@ -3,11 +3,11 @@ using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Guitars.Queries.ReadGuitar
+namespace Application.Features.Guitars.Queries.ReadGuitar
 {
-    public class ReadGuitarQuery : IRequest<GuitarDto>
+    public class ReadGuitar : IRequest<GuitarDto>
     {
-        public ReadGuitarQuery(int id)
+        public ReadGuitar(int id)
         {
             Id = id;
         }
@@ -15,16 +15,16 @@ namespace Application.Guitars.Queries.ReadGuitar
         public int Id { get; private set; }
     }
 
-    public class ReadGuitarQueryHandler : IRequestHandler<ReadGuitarQuery, GuitarDto>
+    public class ReadGuitarHandler : IRequestHandler<ReadGuitar, GuitarDto>
     {
         private readonly IGuitarsContext _guitarContext;
 
-        public ReadGuitarQueryHandler(IGuitarsContext guitarContext)
+        public ReadGuitarHandler(IGuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<GuitarDto> Handle(ReadGuitarQuery request, CancellationToken cancellationToken)
+        public async Task<GuitarDto> Handle(ReadGuitar request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)

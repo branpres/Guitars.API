@@ -2,9 +2,9 @@
 using Application.Common.Interfaces;
 using MediatR;
 
-namespace Application.Guitars.Commands.UpdateGuitar
+namespace Application.Features.Guitars.Commands.UpdateGuitar
 {
-    public class UpdateGuitarCommand : IRequest
+    public class UpdateGuitar : IRequest
     {
         public int Id { get; set; }
 
@@ -13,16 +13,16 @@ namespace Application.Guitars.Commands.UpdateGuitar
         public string Model { get; set; }
     }
 
-    public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand>
+    public class UpdateGuitarHandler : IRequestHandler<UpdateGuitar>
     {
         private readonly IGuitarsContext _guitarContext;
 
-        public UpdateGuitarCommandHandler(IGuitarsContext guitarContext)
+        public UpdateGuitarHandler(IGuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<Unit> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateGuitar request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
             if (guitar == null)

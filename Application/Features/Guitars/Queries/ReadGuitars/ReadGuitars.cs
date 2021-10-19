@@ -5,11 +5,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Application.Guitars.Queries.ReadGuitars
+namespace Application.Features.Guitars.Queries.ReadGuitars
 {
-    public class ReadGuitarsQuery : IRequest<GuitarsVM>
+    public class ReadGuitars : IRequest<GuitarsVM>
     {
-        public ReadGuitarsQuery(string filter, int? pageIndex, int? pageSize)
+        public ReadGuitars(string filter, int? pageIndex, int? pageSize)
         {
             Filter = filter;
             PageIndex = pageIndex;
@@ -23,16 +23,16 @@ namespace Application.Guitars.Queries.ReadGuitars
         public int? PageSize { get; private set; }
     }
 
-    public class ReadGuitarsQueryHandler : IRequestHandler<ReadGuitarsQuery, GuitarsVM>
+    public class ReadGuitarsHandler : IRequestHandler<ReadGuitars, GuitarsVM>
     {
         private readonly IGuitarsContext _guitarContext;
 
-        public ReadGuitarsQueryHandler(IGuitarsContext guitarContext)
+        public ReadGuitarsHandler(IGuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<GuitarsVM> Handle(ReadGuitarsQuery request, CancellationToken cancellationToken)
+        public async Task<GuitarsVM> Handle(ReadGuitars request, CancellationToken cancellationToken)
         {
             Expression<Func<Guitar, bool>> expression = x => !x.IsDeleted;
             if (!string.IsNullOrEmpty(request.Filter))

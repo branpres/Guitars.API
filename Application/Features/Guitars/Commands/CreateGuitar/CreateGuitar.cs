@@ -3,9 +3,9 @@ using Domain.Enums;
 using Domain.Models;
 using MediatR;
 
-namespace Application.Guitars.Commands.CreateGuitar
+namespace Application.Features.Guitars.Commands.CreateGuitar
 {
-    public class CreateGuitarCommand : IRequest<int>
+    public class CreateGuitar : IRequest<int>
     {
         public GuitarType GuitarType { get; set; }
 
@@ -16,16 +16,16 @@ namespace Application.Guitars.Commands.CreateGuitar
         public string Model { get; set; }
     }
 
-    public class CreateGuitarCommandHandler : IRequestHandler<CreateGuitarCommand, int>
+    public class CreateGuitarHandler : IRequestHandler<CreateGuitar, int>
     {
         private readonly IGuitarsContext _guitarContext;
 
-        public CreateGuitarCommandHandler(IGuitarsContext guitarContext)
+        public CreateGuitarHandler(IGuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<int> Handle(CreateGuitarCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateGuitar request, CancellationToken cancellationToken)
         {
             var guitar = new Guitar(request.GuitarType, request.MaxNumberOfStrings, request.Make, request.Model);
 

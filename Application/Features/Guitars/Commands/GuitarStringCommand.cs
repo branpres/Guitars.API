@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Guitars.Commands
+namespace Application.Features.Guitars.Commands
 {
     public abstract class GuitarStringCommand : IRequest
     {

@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Application.Guitars.Queries
+namespace Application.Features.Guitars.Queries
 {
     public static class GuitarDtoExtensions
     {

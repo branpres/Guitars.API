@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Application.Guitars.Commands.CreateGuitar
+namespace Application.Features.Guitars.Commands.CreateGuitar
 {
-    public class CreateGuitarCommandValidator : AbstractValidator<CreateGuitarCommand>
+    public class CreateGuitarValidator : AbstractValidator<CreateGuitar>
     {
-        public CreateGuitarCommandValidator()
+        public CreateGuitarValidator()
         {
             RuleFor(x => x.GuitarType).NotNull().WithMessage("Guitar Type is required.");
             RuleFor(x => x.MaxNumberOfStrings).GreaterThan(0).WithMessage("Max number of strings must be greater than 0.");
