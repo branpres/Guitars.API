@@ -1,5 +1,7 @@
 ﻿using Application.Features.Guitars.Commands.CreateGuitar;
 using Application.Features.Guitars.Commands.DeleteGuitar;
+using Application.Features.Guitars.Commands.StringGuitar;
+using Application.Features.Guitars.Commands.TuneGuitar;
 using Application.Features.Guitars.Commands.UpdateGuitar;
 using Application.Features.Guitars.Queries.ReadGuitar;
 using Application.Features.Guitars.Queries.ReadGuitars;
@@ -16,11 +18,13 @@ namespace Guitars.API.Endpoints
             app.MapGet("/guitars", ReallGuitarsAsync);
             app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
+            app.MapPost("/guitars/string", StringGuitarAsync);
+            app.MapPut("/guitars/tune", TuneGuitarAsync);
         }
 
-        internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitar createGuitarCommand)
+        internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitar createGuitar)
         {
-            var id = await mediator.Send(createGuitarCommand);
+            var id = await mediator.Send(createGuitar);
             return Results.CreatedAtRoute($"/guitars/{id}");
         }
 
@@ -36,9 +40,9 @@ namespace Guitars.API.Endpoints
             return Results.Ok(guitarsVM);
         }               
 
-        internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitar updateGuitarCommand)
+        internal async static Task<IResult> UpdateGuitarAsync(ISender mediator, UpdateGuitar updateGuitar)
         {
-            await mediator.Send(updateGuitarCommand);
+            await mediator.Send(updateGuitar);
             return Results.NoContent();
         }
 
@@ -46,6 +50,18 @@ namespace Guitars.API.Endpoints
         {
             await mediator.Send(new DeleteGuitar(id));
             return Results.NoContent();
-        }        
+        }
+
+        internal async static Task<IResult> StringGuitarAsync(ISender mediator, StringGuitar stringGuitar)
+        {
+            await mediator.Send(stringGuitar);
+            return Results.NoContent();
+        }
+
+        internal async static Task<IResult> TuneGuitarAsync(ISender mediator, TuneGuitar tuneGuitar)
+        {
+            await mediator.Send(tuneGuitar);
+            return Results.NoContent();
+        }
     }
 }
