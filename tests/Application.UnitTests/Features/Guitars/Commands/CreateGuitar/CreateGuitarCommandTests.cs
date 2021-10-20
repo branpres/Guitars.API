@@ -31,8 +31,11 @@ namespace Application.UnitTests.Features.Guitars.Commands.CreateGuitar
             };
 
             var createGuitarCommandHandler = new CreateGuitarCommandHandler(guitarContext.Object);
+
+            // Act
             await createGuitarCommandHandler.Handle(createGuitarCommand, new CancellationToken());
 
+            // Assert
             guitarContext.Verify(x => x.Guitar.AddAsync(It.IsAny<Guitar>(), new CancellationToken()), Times.Once());
             guitarContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
         }
