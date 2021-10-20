@@ -17,9 +17,10 @@ namespace Domain.Models
 
         public string Tuning { get; private set; }
 
-        public void ReString(string gauge)
+        public void ReString(string gauge, string tuning)
         {
             Gauge = gauge;
+            Tuning = tuning;
         }
 
         public void Tune(string tuning)

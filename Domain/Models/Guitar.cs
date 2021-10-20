@@ -30,7 +30,7 @@ namespace Domain.Models
             var guitarString = GuitarStrings.FirstOrDefault(x => x.Number == number);
             if (guitarString != null)
             {
-                guitarString.ReString(gauge);
+                guitarString.ReString(gauge, tuning);
             }
             else
             {
