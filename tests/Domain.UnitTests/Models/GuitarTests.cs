@@ -3,7 +3,7 @@ using Domain.Models;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Domain.UnitTests
+namespace Domain.UnitTests.Models
 {
     public class GuitarTests
     {
