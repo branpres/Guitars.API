@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations
+namespace Application.Data.Configurations
 {
     public class GuitarConfiguration : IEntityTypeConfiguration<Guitar>
     {

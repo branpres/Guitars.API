@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Data;
 using Domain.Enums;
 using Domain.Models;
 using MediatR;
@@ -18,9 +18,9 @@ namespace Application.Features.Guitars.Commands.CreateGuitar
 
     public class CreateGuitarHandler : IRequestHandler<CreateGuitar, int>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public CreateGuitarHandler(IGuitarsContext guitarContext)
+        public CreateGuitarHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }

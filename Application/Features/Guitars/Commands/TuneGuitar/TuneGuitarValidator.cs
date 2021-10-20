@@ -1,19 +1,19 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Data;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace Application.Features.Guitars.Commands
+namespace Application.Features.Guitars.Commands.TuneGuitar
 {
-    public class GuitarStringCommandValidator : AbstractValidator<GuitarStringCommand>
+    public class TuneGuitarValidator : AbstractValidator<TuneGuitar>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public GuitarStringCommandValidator(IGuitarsContext guitarsContext)
+        public TuneGuitarValidator(GuitarsContext guitarsContext)
         {
-            _guitarContext = guitarsContext;            
-            
+            _guitarContext = guitarsContext;
+
             var validStringTunings = new List<string> { "Ab", "A", "A#", "Bb", "B", "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#" };
-            
+
             RuleFor(x => x).NotEmpty().WithMessage("GuitarStrings collection cannot be empty.")
                 .MustAsync(HaveValidStringNumbers).WithMessage("");
             RuleForEach(x => x.GuitarStrings)
@@ -21,9 +21,9 @@ namespace Application.Features.Guitars.Commands
                 .ChildRules(c => c.RuleFor(cr => cr.Tuning).NotEmpty().WithMessage("Tuning is required.")
                     .Must(x => validStringTunings.Contains(x)).WithMessage($"Tuning must be one of the following values: {string.Join(",", validStringTunings)}"));
         }
-        
 
-        protected override bool PreValidate(ValidationContext<GuitarStringCommand> context, ValidationResult result)
+
+        protected override bool PreValidate(ValidationContext<TuneGuitar> context, ValidationResult result)
         {
             if (context.InstanceToValidate.GuitarStrings == null)
             {
@@ -34,9 +34,9 @@ namespace Application.Features.Guitars.Commands
             return base.PreValidate(context, result);
         }
 
-        private async Task<bool> HaveValidStringNumbers(GuitarStringCommand guitarStringCommand, CancellationToken cancellation)
+        private async Task<bool> HaveValidStringNumbers(TuneGuitar guitarStringCommand, CancellationToken cancellationToken)
         {
-            var guitar = await _guitarContext.Guitar.FindAsync(guitarStringCommand.Id);
+            var guitar = await _guitarContext.Guitar.FindAsync(new object[] { guitarStringCommand.Id }, cancellationToken);
             if (guitar == null)
             {
                 return false;

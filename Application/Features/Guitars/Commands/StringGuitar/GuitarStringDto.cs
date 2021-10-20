@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Guitars.Commands
+﻿namespace Application.Features.Guitars.Commands.StringGuitar
 {
     public class GuitarStringDto
     {

@@ -1,5 +1,5 @@
 ﻿using Application.Common.Extensions;
-using Application.Common.Interfaces;
+using Application.Data;
 using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +25,9 @@ namespace Application.Features.Guitars.Queries.ReadGuitars
 
     public class ReadGuitarsHandler : IRequestHandler<ReadGuitars, GuitarsVM>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public ReadGuitarsHandler(IGuitarsContext guitarContext)
+        public ReadGuitarsHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }

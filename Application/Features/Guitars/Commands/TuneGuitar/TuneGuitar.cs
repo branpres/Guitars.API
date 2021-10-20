@@ -1,25 +1,29 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+using Application.Data;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Guitars.Commands.TuneGuitar
 {
-    public class TuneGuitar : GuitarStringCommand
+    public class TuneGuitar : IRequest
     {
-        public TuneGuitar(int id, List<GuitarStringDto> guitarStrings) : base(id, guitarStrings) { }
+        public TuneGuitar(int id, List<GuitarStringDto> guitarStrings)
+        {
+            Id = id;
+            GuitarStrings = guitarStrings;
+        }
+
+        public int Id { get; private set; }
+
+        public List<GuitarStringDto> GuitarStrings { get; private set; }
     }
 
     public class TuneGuitarHandler : IRequestHandler<TuneGuitar>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public TuneGuitarHandler(IGuitarsContext guitarContext)
+        public TuneGuitarHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
@@ -31,7 +35,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
             if (guitar == null)
             {
-                throw new NotFoundException(nameof(guitar), request.Id);
+                throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
             request.GuitarStrings.ForEach(x => guitar.Tune(x.Number, x.Tuning));

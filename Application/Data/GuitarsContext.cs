@@ -1,12 +1,11 @@
-﻿using Application.Common.Interfaces;
-using Domain.Common;
+﻿using Domain.Common;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure.Persistence
+namespace Application.Data
 {
-    public class GuitarsContext : DbContext, IGuitarsContext
+    public class GuitarsContext : DbContext
     {
         public GuitarsContext() { }
 

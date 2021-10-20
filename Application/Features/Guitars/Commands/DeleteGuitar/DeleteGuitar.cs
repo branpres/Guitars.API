@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+using Application.Data;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,9 @@ namespace Application.Features.Guitars.Commands.DeleteGuitar
 
     public class DeleteGuitarHandler : IRequestHandler<DeleteGuitar>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public DeleteGuitarHandler(IGuitarsContext guitarContext)
+        public DeleteGuitarHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
@@ -31,7 +32,7 @@ namespace Application.Features.Guitars.Commands.DeleteGuitar
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
             if (guitar == null)
             {
-                throw new NotFoundException(nameof(guitar), request.Id);
+                throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
             guitar.IsDeleted = true;

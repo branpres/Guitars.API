@@ -1,14 +1,12 @@
-﻿using Application.Common.Interfaces;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure
+namespace Application.Data
 {
     public static class DependencyInjection
     {
-        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static void AddData(this IServiceCollection services, IConfiguration configuration)
         {
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
@@ -19,7 +17,7 @@ namespace Infrastructure
                 services.AddDbContext<GuitarsContext>(options => options.UseMySQL(configuration.GetConnectionString("Guitars")));
             }
                         
-            services.AddScoped<IGuitarsContext>(provider => provider.GetService<GuitarsContext>());
+            services.AddScoped<GuitarsContext>();
         }
     }
 }

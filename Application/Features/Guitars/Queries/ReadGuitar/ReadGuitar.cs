@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+using Application.Data;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +18,9 @@ namespace Application.Features.Guitars.Queries.ReadGuitar
 
     public class ReadGuitarHandler : IRequestHandler<ReadGuitar, GuitarDto>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public ReadGuitarHandler(IGuitarsContext guitarContext)
+        public ReadGuitarHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
@@ -31,7 +32,7 @@ namespace Application.Features.Guitars.Queries.ReadGuitar
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
             if (guitar == null)
             {
-                throw new NotFoundException(nameof(guitar), request.Id);
+                throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
             return guitar?.MapToDto();

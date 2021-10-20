@@ -1,6 +1,6 @@
 using Guitars.API.Endpoints;
 using Application;
-using Infrastructure;
+using Application.Data;
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // configure dependency injection for projects
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(configuration);
+builder.Services.AddData(configuration);
 
 var app = builder.Build();
 

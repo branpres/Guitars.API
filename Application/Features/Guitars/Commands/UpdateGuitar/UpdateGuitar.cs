@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+using Application.Data;
+using Domain.Models;
 using MediatR;
 
 namespace Application.Features.Guitars.Commands.UpdateGuitar
@@ -15,9 +16,9 @@ namespace Application.Features.Guitars.Commands.UpdateGuitar
 
     public class UpdateGuitarHandler : IRequestHandler<UpdateGuitar>
     {
-        private readonly IGuitarsContext _guitarContext;
+        private readonly GuitarsContext _guitarContext;
 
-        public UpdateGuitarHandler(IGuitarsContext guitarContext)
+        public UpdateGuitarHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
@@ -27,7 +28,7 @@ namespace Application.Features.Guitars.Commands.UpdateGuitar
             var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
             if (guitar == null)
             {
-                throw new NotFoundException(nameof(guitar), request.Id);
+                throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
             guitar.Make = request.Make;
