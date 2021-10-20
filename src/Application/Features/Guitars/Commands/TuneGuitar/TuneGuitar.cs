@@ -8,15 +8,15 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
 {
     public class TuneGuitar : IRequest
     {
-        public TuneGuitar(int id, List<GuitarStringDto> guitarStrings)
+        public TuneGuitar(int id, List<TuningDto> tunings)
         {
             Id = id;
-            GuitarStrings = guitarStrings;
+            Tunings = tunings;
         }
 
         public int Id { get; private set; }
 
-        public List<GuitarStringDto> GuitarStrings { get; private set; }
+        public List<TuningDto> Tunings { get; private set; }
     }
 
     public class TuneGuitarHandler : IRequestHandler<TuneGuitar>
@@ -38,7 +38,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
                 throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
-            request.GuitarStrings.ForEach(x => guitar.Tune(x.Number, x.Tuning));
+            request.Tunings.ForEach(x => guitar.Tune(x.Number, x.Tuning));
             await _guitarContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

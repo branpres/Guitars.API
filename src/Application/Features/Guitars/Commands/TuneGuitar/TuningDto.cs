@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Guitars.Commands.TuneGuitar
 {
-    public class GuitarStringDto
+    public class TuningDto
     {
         public int Number { get; set; }
 

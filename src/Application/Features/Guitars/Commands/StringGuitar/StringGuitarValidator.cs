@@ -16,7 +16,7 @@ namespace Application.Features.Guitars.Commands.StringGuitar
 
             RuleFor(x => x).NotEmpty().WithMessage("GuitarStrings collection cannot be empty.")
                 .MustAsync(HaveValidStringNumbers).WithMessage("");
-            RuleForEach(x => x.GuitarStrings)
+            RuleForEach(x => x.Strings)
                 .ChildRules(c => c.RuleFor(cr => cr.Number).GreaterThan(0).WithMessage("Number must be greater than 0."))
                 .ChildRules(c => c.RuleFor(cr => cr.Gauge).NotEmpty().WithMessage("Gauge is required."))
                 .ChildRules(c => c.RuleFor(cr => cr.Tuning).NotEmpty().WithMessage("Tuning is required.")
@@ -26,7 +26,7 @@ namespace Application.Features.Guitars.Commands.StringGuitar
 
         protected override bool PreValidate(ValidationContext<StringGuitar> context, ValidationResult result)
         {
-            if (context.InstanceToValidate.GuitarStrings == null)
+            if (context.InstanceToValidate.Strings == null)
             {
                 result.Errors.Add(new ValidationFailure("GuitarStrings", "GuitarStrings collection cannot be null."));
                 return false;
@@ -43,7 +43,7 @@ namespace Application.Features.Guitars.Commands.StringGuitar
                 return false;
             }
 
-            var invalidStringNumbers = guitarStringCommand.GuitarStrings.Where(x => x.Number > guitar.MaxNumberOfStrings).Select(x => x.Number).Distinct();
+            var invalidStringNumbers = guitarStringCommand.Strings.Where(x => x.Number > guitar.MaxNumberOfStrings).Select(x => x.Number).Distinct();
             return !invalidStringNumbers.Any();
         }
     }

@@ -8,15 +8,15 @@ namespace Application.Features.Guitars.Commands.StringGuitar
 {
     public class StringGuitar : IRequest
     {
-        public StringGuitar(int id, List<GuitarStringDto> guitarStrings)
+        public StringGuitar(int id, List<StringDto> strings)
         {
             Id = id;
-            GuitarStrings = guitarStrings;
+            Strings = strings;
         }
 
         public int Id { get; private set; }
 
-        public List<GuitarStringDto> GuitarStrings { get; private set; }
+        public List<StringDto> Strings { get; private set; }
     }
 
     public class StringGuitarHandler : IRequestHandler<StringGuitar>
@@ -38,7 +38,7 @@ namespace Application.Features.Guitars.Commands.StringGuitar
                 throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
-            request.GuitarStrings.ForEach(x => guitar.String(x.Number, x.Gauge, x.Tuning));
+            request.Strings.ForEach(x => guitar.String(x.Number, x.Gauge, x.Tuning));
             await _guitarContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
