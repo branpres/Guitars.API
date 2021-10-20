@@ -8,6 +8,10 @@ namespace Application.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Guitar> builder)
         {
+            builder.Property(x => x.GuitarType)
+                .IsRequired();
+            builder.Property(x => x.MaxNumberOfStrings)
+                .IsRequired();
             builder.Property(x => x.Make)
                 .IsRequired()
                 .HasMaxLength(100);
