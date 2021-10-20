@@ -30,7 +30,7 @@ namespace Application.UnitTests.Common.Behaviors
             var validationBehavior = new ValidationBehavior<CreateGuitar, int>(validators);
 
             // Act
-            Task<int> requestHandlerDelegate()
+            Task<int> createGuitarHandlerDelegate()
             {
                 var guitarContext = new Mock<GuitarsContext>();
                 var createGuitarHandler = new CreateGuitarHandler(guitarContext.Object);
@@ -38,7 +38,7 @@ namespace Application.UnitTests.Common.Behaviors
             }
 
             // Assert
-            Assert.ThrowsAsync<ValidationException>(() => validationBehavior.Handle(createGuitar, new CancellationToken(), requestHandlerDelegate));
+            Assert.ThrowsAsync<ValidationException>(() => validationBehavior.Handle(createGuitar, new CancellationToken(), createGuitarHandlerDelegate));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Application.UnitTests.Common.Behaviors
             var validationBehavior = new ValidationBehavior<CreateGuitar, int>(validators);
 
             // Act
-            Task<int> requestHandlerDelegate()
+            Task<int> createGuitarHandlerDelegate()
             {
                 var guitarDbSet = new List<Guitar>().AsQueryable().BuildMockDbSet();
                 var guitarContext = new Mock<GuitarsContext>();
@@ -67,7 +67,7 @@ namespace Application.UnitTests.Common.Behaviors
             }
 
             // Assert
-            Assert.DoesNotThrowAsync(() => validationBehavior.Handle(createGuitar, new CancellationToken(), requestHandlerDelegate));
+            Assert.DoesNotThrowAsync(() => validationBehavior.Handle(createGuitar, new CancellationToken(), createGuitarHandlerDelegate));
         }
     }
 }
