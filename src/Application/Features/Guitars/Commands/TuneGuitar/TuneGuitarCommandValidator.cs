@@ -4,11 +4,11 @@ using FluentValidation.Results;
 
 namespace Application.Features.Guitars.Commands.TuneGuitar
 {
-    public class TuneGuitarValidator : AbstractValidator<TuneGuitar>
+    public class TuneGuitarCommandValidator : AbstractValidator<TuneGuitarCommand>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public TuneGuitarValidator(GuitarsContext guitarsContext)
+        public TuneGuitarCommandValidator(GuitarsContext guitarsContext)
         {
             _guitarContext = guitarsContext;
 
@@ -23,7 +23,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
         }
 
 
-        protected override bool PreValidate(ValidationContext<TuneGuitar> context, ValidationResult result)
+        protected override bool PreValidate(ValidationContext<TuneGuitarCommand> context, ValidationResult result)
         {
             if (context.InstanceToValidate.Tunings == null)
             {
@@ -34,7 +34,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
             return base.PreValidate(context, result);
         }
 
-        private async Task<bool> HaveValidStringNumbers(TuneGuitar guitarStringCommand, CancellationToken cancellationToken)
+        private async Task<bool> HaveValidStringNumbers(TuneGuitarCommand guitarStringCommand, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar.FindAsync(new object[] { guitarStringCommand.Id }, cancellationToken);
             if (guitar == null)

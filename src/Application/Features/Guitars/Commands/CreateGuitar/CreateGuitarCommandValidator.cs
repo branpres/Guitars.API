@@ -2,9 +2,9 @@
 
 namespace Application.Features.Guitars.Commands.CreateGuitar
 {
-    public class CreateGuitarValidator : AbstractValidator<CreateGuitar>
+    public class CreateGuitarCommandValidator : AbstractValidator<CreateGuitarCommand>
     {
-        public CreateGuitarValidator()
+        public CreateGuitarCommandValidator()
         {
             RuleFor(x => x.GuitarType).NotNull().WithMessage("Guitar Type is required.");
             RuleFor(x => x.MaxNumberOfStrings).GreaterThan(0).WithMessage("Max number of strings must be greater than 0.");

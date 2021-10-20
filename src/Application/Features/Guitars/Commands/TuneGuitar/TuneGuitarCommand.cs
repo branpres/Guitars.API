@@ -4,28 +4,31 @@ using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Guitars.Commands.DeleteGuitar
+namespace Application.Features.Guitars.Commands.TuneGuitar
 {
-    public class DeleteGuitar : IRequest
+    public class TuneGuitarCommand : IRequest
     {
-        public DeleteGuitar(int id)
+        public TuneGuitarCommand(int id, List<TuningDto> tunings)
         {
             Id = id;
+            Tunings = tunings;
         }
 
         public int Id { get; private set; }
+
+        public List<TuningDto> Tunings { get; private set; }
     }
 
-    public class DeleteGuitarHandler : IRequestHandler<DeleteGuitar>
+    public class TuneGuitarCommandHandler : IRequestHandler<TuneGuitarCommand>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public DeleteGuitarHandler(GuitarsContext guitarContext)
+        public TuneGuitarCommandHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<Unit> Handle(DeleteGuitar request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(TuneGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)
@@ -35,8 +38,7 @@ namespace Application.Features.Guitars.Commands.DeleteGuitar
                 throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
-            guitar.IsDeleted = true;
-            guitar.GuitarStrings.ForEach(x => x.IsDeleted = true);
+            request.Tunings.ForEach(x => guitar.Tune(x.Number, x.Tuning));
             await _guitarContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

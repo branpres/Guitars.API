@@ -25,35 +25,35 @@ namespace Application.UnitTests.Common.Behaviors
         public void ShouldThrowValidationException()
         {
             // Arrange
-            var createGuitar = new CreateGuitar();
-            var validators = new List<CreateGuitarValidator> { new CreateGuitarValidator() };
-            var validationBehavior = new ValidationBehavior<CreateGuitar, int>(validators);
+            var createGuitarCommand = new CreateGuitarCommand();
+            var validators = new List<CreateGuitarCommandValidator> { new CreateGuitarCommandValidator() };
+            var validationBehavior = new ValidationBehavior<CreateGuitarCommand, int>(validators);
 
             // Act
             Task<int> createGuitarHandlerDelegate()
             {
                 var guitarContext = new Mock<GuitarsContext>();
-                var createGuitarHandler = new CreateGuitarHandler(guitarContext.Object);
-                return createGuitarHandler.Handle(createGuitar, new CancellationToken());
+                var createGuitarCommandHandler = new CreateGuitarCommandHandler(guitarContext.Object);
+                return createGuitarCommandHandler.Handle(createGuitarCommand, new CancellationToken());
             }
 
             // Assert
-            Assert.ThrowsAsync<ValidationException>(() => validationBehavior.Handle(createGuitar, new CancellationToken(), createGuitarHandlerDelegate));
+            Assert.ThrowsAsync<ValidationException>(() => validationBehavior.Handle(createGuitarCommand, new CancellationToken(), createGuitarHandlerDelegate));
         }
 
         [Test]
         public void ShouldNotThrowValidationException()
         {
             // Arrange
-            var createGuitar = new CreateGuitar
+            var createGuitarCommand = new CreateGuitarCommand
             {
                 GuitarType = GuitarType.AcousticElectric,
                 MaxNumberOfStrings = 6,
                 Make = "Taylor",
                 Model = "314-CE"
             };
-            var validators = new List<CreateGuitarValidator> { new CreateGuitarValidator() };
-            var validationBehavior = new ValidationBehavior<CreateGuitar, int>(validators);
+            var validators = new List<CreateGuitarCommandValidator> { new CreateGuitarCommandValidator() };
+            var validationBehavior = new ValidationBehavior<CreateGuitarCommand, int>(validators);
 
             // Act
             Task<int> createGuitarHandlerDelegate()
@@ -62,12 +62,12 @@ namespace Application.UnitTests.Common.Behaviors
                 var guitarContext = new Mock<GuitarsContext>();
                 guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
-                var createGuitarHandler = new CreateGuitarHandler(guitarContext.Object);
-                return createGuitarHandler.Handle(createGuitar, new CancellationToken());
+                var createGuitarCommandHandler = new CreateGuitarCommandHandler(guitarContext.Object);
+                return createGuitarCommandHandler.Handle(createGuitarCommand, new CancellationToken());
             }
 
             // Assert
-            Assert.DoesNotThrowAsync(() => validationBehavior.Handle(createGuitar, new CancellationToken(), createGuitarHandlerDelegate));
+            Assert.DoesNotThrowAsync(() => validationBehavior.Handle(createGuitarCommand, new CancellationToken(), createGuitarHandlerDelegate));
         }
     }
 }

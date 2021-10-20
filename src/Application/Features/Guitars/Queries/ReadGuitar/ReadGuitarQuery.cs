@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Guitars.Queries.ReadGuitar
 {
-    public class ReadGuitar : IRequest<GuitarDto>
+    public class ReadGuitarQuery : IRequest<GuitarDto>
     {
-        public ReadGuitar(int id)
+        public ReadGuitarQuery(int id)
         {
             Id = id;
         }
@@ -16,16 +16,16 @@ namespace Application.Features.Guitars.Queries.ReadGuitar
         public int Id { get; private set; }
     }
 
-    public class ReadGuitarHandler : IRequestHandler<ReadGuitar, GuitarDto>
+    public class ReadGuitarQueryHandler : IRequestHandler<ReadGuitarQuery, GuitarDto>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public ReadGuitarHandler(GuitarsContext guitarContext)
+        public ReadGuitarQueryHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<GuitarDto> Handle(ReadGuitar request, CancellationToken cancellationToken)
+        public async Task<GuitarDto> Handle(ReadGuitarQuery request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)

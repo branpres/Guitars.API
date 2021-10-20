@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Features.Guitars.Commands.UpdateGuitar
 {
-    public class UpdateGuitar : IRequest
+    public class UpdateGuitarCommand : IRequest
     {
         public int Id { get; set; }
 
@@ -14,16 +14,16 @@ namespace Application.Features.Guitars.Commands.UpdateGuitar
         public string Model { get; set; }
     }
 
-    public class UpdateGuitarHandler : IRequestHandler<UpdateGuitar>
+    public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public UpdateGuitarHandler(GuitarsContext guitarContext)
+        public UpdateGuitarCommandHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<Unit> Handle(UpdateGuitar request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
             if (guitar == null)

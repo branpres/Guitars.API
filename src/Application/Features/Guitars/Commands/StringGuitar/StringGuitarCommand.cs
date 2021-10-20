@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Guitars.Commands.StringGuitar
 {
-    public class StringGuitar : IRequest
+    public class StringGuitarCommand : IRequest
     {
-        public StringGuitar(int id, List<StringDto> strings)
+        public StringGuitarCommand(int id, List<StringDto> strings)
         {
             Id = id;
             Strings = strings;
@@ -19,16 +19,16 @@ namespace Application.Features.Guitars.Commands.StringGuitar
         public List<StringDto> Strings { get; private set; }
     }
 
-    public class StringGuitarHandler : IRequestHandler<StringGuitar>
+    public class StringGuitarCommandHandler : IRequestHandler<StringGuitarCommand>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public StringGuitarHandler(GuitarsContext guitarContext)
+        public StringGuitarCommandHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<Unit> Handle(StringGuitar request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(StringGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = await _guitarContext.Guitar
                 .Include(x => x.GuitarStrings)

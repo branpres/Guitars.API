@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Features.Guitars.Commands.CreateGuitar
 {
-    public class CreateGuitar : IRequest<int>
+    public class CreateGuitarCommand : IRequest<int>
     {
         public GuitarType GuitarType { get; set; }
 
@@ -16,16 +16,16 @@ namespace Application.Features.Guitars.Commands.CreateGuitar
         public string Model { get; set; }
     }
 
-    public class CreateGuitarHandler : IRequestHandler<CreateGuitar, int>
+    public class CreateGuitarCommandHandler : IRequestHandler<CreateGuitarCommand, int>
     {
         private readonly GuitarsContext _guitarContext;
 
-        public CreateGuitarHandler(GuitarsContext guitarContext)
+        public CreateGuitarCommandHandler(GuitarsContext guitarContext)
         {
             _guitarContext = guitarContext;
         }
 
-        public async Task<int> Handle(CreateGuitar request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateGuitarCommand request, CancellationToken cancellationToken)
         {
             var guitar = new Guitar(request.GuitarType, request.MaxNumberOfStrings, request.Make, request.Model);
 
