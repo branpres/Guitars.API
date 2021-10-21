@@ -1,15 +1,21 @@
 ﻿using Domain.Common;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace Application.Data
 {
     public class GuitarsContext : DbContext
     {
+        private readonly IConfigurationRoot _configuration;
+
         public GuitarsContext() { }
 
-        public GuitarsContext(DbContextOptions<GuitarsContext> options) : base(options) { }
+        public GuitarsContext(DbContextOptions<GuitarsContext> options, IConfigurationRoot configuration) : base(options)
+        {
+            _configuration = configuration;
+        }
 
         public virtual DbSet<Guitar> Guitar { get; set; }
 
@@ -18,7 +24,9 @@ namespace Application.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // don't like this, but not sure how to get around it atm
-            optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;Trusted_Connection=True;port=3306");
+            //optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;Trusted_Connection=True;port=3306");
+            
+            optionsBuilder.UseMySQL(_configuration.GetConnectionString("Guitars"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

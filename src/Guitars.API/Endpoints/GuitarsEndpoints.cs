@@ -19,7 +19,7 @@ namespace Guitars.API.Endpoints
             app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
             app.MapPost("/guitars/string", StringGuitarAsync);
-            app.MapPut("/guitars/tune", TuneGuitarAsync);
+            app.MapPost("/guitars/tune", TuneGuitarAsync);
         }
 
         internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitarCommand createGuitarCommand)

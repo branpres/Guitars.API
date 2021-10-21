@@ -2,8 +2,6 @@ using Guitars.API.Endpoints;
 using Application;
 using Application.Data;
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,7 +13,10 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
 });
 
-// configure dependency injection for projects
+var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
+builder.Services.AddSingleton<IConfigurationRoot>(configuration);
+
+// configure dependency injection
 builder.Services.AddApplication();
 builder.Services.AddData(configuration);
 
@@ -33,5 +34,7 @@ app.UseHttpsRedirection();
 app.UseExceptionHandler("/errors");
 
 app.MapErrorEndpoints();
+
+app.Services.ApplyMigrations();
 
 app.Run();
