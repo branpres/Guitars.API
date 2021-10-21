@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Application\Application.csproj" />
+    <ProjectReference Include="..\Tests.Extensions\Tests.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

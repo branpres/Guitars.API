@@ -35,7 +35,7 @@ namespace Application.Features.Guitars.Queries.ReadGuitar
                 throw new NotFoundException(nameof(Guitar), request.Id);
             }
 
-            return guitar?.MapToDto();
+            return guitar.MapToDto();
         }
     }
 }
