@@ -15,7 +15,7 @@ namespace Guitars.API.Endpoints
         {
             app.MapPost("/guitars", CreateGuitarAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);
-            app.MapGet("/guitars", ReallGuitarsAsync);
+            app.MapGet("/guitars", ReadGuitarsAsync);
             app.MapPut("/guitars", UpdateGuitarAsync);
             app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
             app.MapPost("/guitars/string", StringGuitarAsync);
@@ -34,7 +34,7 @@ namespace Guitars.API.Endpoints
             return Results.Ok(guitarDto);
         }
 
-        internal async static Task<IResult> ReallGuitarsAsync(ISender mediator, string filter, int? pageIndex = null, int? pageSize = null)
+        internal async static Task<IResult> ReadGuitarsAsync(ISender mediator, string? filter = null, int? pageIndex = null, int? pageSize = null)
         {
             var guitarsVM = await mediator.Send(new ReadGuitarsQuery(filter, pageIndex, pageSize));
             return Results.Ok(guitarsVM);

@@ -8,10 +8,10 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapErrorEndpoints(this WebApplication app)
         {
-            app.Map("/errors", LogError);
+            app.Map("/errors", HandleError);
         }
 
-        internal static IResult LogError(HttpContext httpContext)
+        internal static IResult HandleError(HttpContext httpContext)
         {
             // TODO: log the error
 

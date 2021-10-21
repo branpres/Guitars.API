@@ -9,14 +9,14 @@ namespace Application.Features.Guitars.Queries.ReadGuitars
 {
     public class ReadGuitarsQuery : IRequest<GuitarsVM>
     {
-        public ReadGuitarsQuery(string filter, int? pageIndex, int? pageSize)
+        public ReadGuitarsQuery(string? filter = null, int? pageIndex = null, int? pageSize = null)
         {
             Filter = filter;
             PageIndex = pageIndex;
             PageSize = pageSize;
         }
 
-        public string Filter { get; private set; }
+        public string? Filter { get; private set; }
 
         public int? PageIndex { get; private set; }
 
