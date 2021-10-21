@@ -32,6 +32,7 @@ app.UseHttpsRedirection();
 
 app.UseExceptionHandler("/errors");
 
+app.MapGuitarEndpoints();
 app.MapErrorEndpoints();
 
 app.Services.ApplyMigrations();
