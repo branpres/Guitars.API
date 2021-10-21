@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Application.Migrations
+namespace Application.Data.Migrations
 {
     [DbContext(typeof(GuitarsContext))]
     [Migration("20211021212412_CreateTables")]

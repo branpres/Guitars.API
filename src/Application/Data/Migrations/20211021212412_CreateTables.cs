@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
-namespace Application.Migrations
+namespace Application.Data.Migrations
 {
     public partial class CreateTables : Migration
     {

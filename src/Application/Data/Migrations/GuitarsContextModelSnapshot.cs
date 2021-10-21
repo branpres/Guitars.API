@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Application.Migrations
+namespace Application.Data.Migrations
 {
     [DbContext(typeof(GuitarsContext))]
     partial class GuitarsContextModelSnapshot : ModelSnapshot
