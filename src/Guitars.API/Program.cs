@@ -14,7 +14,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
-builder.Services.AddSingleton<IConfigurationRoot>(configuration);
 
 // configure dependency injection
 builder.Services.AddApplication();

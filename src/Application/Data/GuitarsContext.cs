@@ -8,14 +8,9 @@ namespace Application.Data
 {
     public class GuitarsContext : DbContext
     {
-        private readonly IConfigurationRoot _configuration;
-
         public GuitarsContext() { }
 
-        public GuitarsContext(DbContextOptions<GuitarsContext> options, IConfigurationRoot configuration) : base(options)
-        {
-            _configuration = configuration;
-        }
+        public GuitarsContext(DbContextOptions<GuitarsContext> options) : base(options) { }
 
         public virtual DbSet<Guitar> Guitar { get; set; }
 
@@ -23,10 +18,8 @@ namespace Application.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // don't like this, but not sure how to get around it atm
-            //optionsBuilder.UseMySQL("Server=127.0.0.1;Database=guitars;Trusted_Connection=True;port=3306");
-            
-            optionsBuilder.UseMySQL(_configuration.GetConnectionString("Guitars"));
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
+            optionsBuilder.UseMySQL(configuration.GetConnectionString("Guitars"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
