@@ -19,8 +19,8 @@ namespace Application.UnitTests.Features.Guitars.Commands.CreateGuitar
         {
             // Arrange
             var guitarDbSet = new List<Guitar>().AsQueryable().BuildMockDbSet();
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -30,14 +30,14 @@ namespace Application.UnitTests.Features.Guitars.Commands.CreateGuitar
                 Model = "314-CE"
             };
 
-            var createGuitarCommandHandler = new CreateGuitarCommandHandler(guitarContext.Object);
+            var createGuitarCommandHandler = new CreateGuitarCommandHandler(guitarsContext.Object);
 
             // Act
             await createGuitarCommandHandler.Handle(createGuitarCommand, new CancellationToken());
 
             // Assert
-            guitarContext.Verify(x => x.Guitar.AddAsync(It.IsAny<Guitar>(), new CancellationToken()), Times.Once());
-            guitarContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
+            guitarsContext.Verify(x => x.Guitar.AddAsync(It.IsAny<Guitar>(), new CancellationToken()), Times.Once());
+            guitarsContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
         }
     }
 }

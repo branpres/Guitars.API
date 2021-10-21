@@ -18,11 +18,11 @@ namespace Application.UnitTests.Features.Guitars.Queries.ReadGuitar
             // Arrange
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var readGuitarQuery = new ReadGuitarQuery(1);
-            var readGuitarQueryHandler = new ReadGuitarQueryHandler(guitarContext.Object);
+            var readGuitarQueryHandler = new ReadGuitarQueryHandler(guitarsContext.Object);
 
             // Act
             var guitarDto = await readGuitarQueryHandler.Handle(readGuitarQuery, new CancellationToken());
@@ -38,11 +38,11 @@ namespace Application.UnitTests.Features.Guitars.Queries.ReadGuitar
             // Arrange
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var readGuitarQuery = new ReadGuitarQuery(999999);
-            var readGuitarQueryHandler = new ReadGuitarQueryHandler(guitarContext.Object);
+            var readGuitarQueryHandler = new ReadGuitarQueryHandler(guitarsContext.Object);
 
             // Act
             Task readGuitarQueryHandlerDelegate = readGuitarQueryHandler.Handle(readGuitarQuery, new CancellationToken());

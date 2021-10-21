@@ -18,11 +18,11 @@ namespace Application.UnitTests.Features.Guitars.Commands.DeleteGuitar
             // Arrange
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var deleteGuitarCommand = new DeleteGuitarCommand(1);
-            var deleteGuitarCommandHandler = new DeleteGuitarCommandHandler(guitarContext.Object);
+            var deleteGuitarCommandHandler = new DeleteGuitarCommandHandler(guitarsContext.Object);
 
             // Act
             await deleteGuitarCommandHandler.Handle(deleteGuitarCommand, new CancellationToken());
@@ -36,7 +36,7 @@ namespace Application.UnitTests.Features.Guitars.Commands.DeleteGuitar
                 Assert.AreEqual(true, guitarString.IsDeleted);
             }
 
-            guitarContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
+            guitarsContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
         }
 
         [Test]
@@ -45,11 +45,11 @@ namespace Application.UnitTests.Features.Guitars.Commands.DeleteGuitar
             // Arrange
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var deleteGuitarCommand = new DeleteGuitarCommand(999999);
-            var deleteGuitarCommandHandler = new DeleteGuitarCommandHandler(guitarContext.Object);
+            var deleteGuitarCommandHandler = new DeleteGuitarCommandHandler(guitarsContext.Object);
 
             // Act
             Task deleteGuitarCommandHandlerDelegate = deleteGuitarCommandHandler.Handle(deleteGuitarCommand, new CancellationToken());

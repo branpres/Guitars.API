@@ -20,8 +20,8 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
             guitarDbSet.SetupFindAsync(guitars);
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var updateGuitarCommand = new UpdateGuitarCommand
             {
@@ -29,7 +29,7 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
                 Make = "Gibson2",
                 Model = "J-46"
             };
-            var updateGuitarCommandHandler = new UpdateGuitarCommandHandler(guitarContext.Object);
+            var updateGuitarCommandHandler = new UpdateGuitarCommandHandler(guitarsContext.Object);
 
             // Act
             await updateGuitarCommandHandler.Handle(updateGuitarCommand, new CancellationToken());
@@ -38,7 +38,7 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
             var guitar = guitars.First(x => x.Id == 1);
             Assert.AreEqual("Gibson2", guitar.Make);
             Assert.AreEqual("J-46", guitar.Model);
-            guitarContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
+            guitarsContext.Verify(x => x.SaveChangesAsync(new CancellationToken()), Times.Once());
         }
 
         [Test]
@@ -48,14 +48,14 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
             var guitars = GuitarsTestsHelper.GetGuitars();
             var guitarDbSet = guitars.AsQueryable().BuildMockDbSet();
             guitarDbSet.SetupFindAsync(guitars);
-            var guitarContext = new Mock<GuitarsContext>();
-            guitarContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
+            var guitarsContext = new Mock<GuitarsContext>();
+            guitarsContext.Setup(x => x.Guitar).Returns(guitarDbSet.Object);
 
             var updateGuitarCommand = new UpdateGuitarCommand
             {
                 Id = 999999
             };
-            var updateGuitarCommandHandler = new UpdateGuitarCommandHandler(guitarContext.Object);
+            var updateGuitarCommandHandler = new UpdateGuitarCommandHandler(guitarsContext.Object);
 
             // Act
             Task updateGuitarCommandHandlerDelegate = updateGuitarCommandHandler.Handle(updateGuitarCommand, new CancellationToken());

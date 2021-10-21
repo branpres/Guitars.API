@@ -28,6 +28,31 @@ namespace Domain.UnitTests.Models
 
             // Assert
             Assert.AreEqual(6, guitar.GuitarStrings.Count);
+            
+            var guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 1);
+            Assert.AreEqual("010", guitarString.Gauge);
+            Assert.AreEqual("E", guitarString.Tuning);
+
+            guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 2);
+            Assert.AreEqual("013", guitarString.Gauge);
+            Assert.AreEqual("B", guitarString.Tuning);
+
+            guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 3);
+            Assert.AreEqual("017", guitarString.Gauge);
+            Assert.AreEqual("G", guitarString.Tuning);
+
+            guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 4);
+            Assert.AreEqual("DY26", guitarString.Gauge);
+            Assert.AreEqual("D", guitarString.Tuning);
+
+            guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 5);
+            Assert.AreEqual("DY36", guitarString.Gauge);
+            Assert.AreEqual("A", guitarString.Tuning);
+
+            guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 6);
+            Assert.AreEqual("DY46", guitarString.Gauge);
+            Assert.AreEqual("E", guitarString.Tuning);
+
         }
 
         [Test]
@@ -43,12 +68,13 @@ namespace Domain.UnitTests.Models
             guitar.String(4, "DY26", "D");
             guitar.String(5, "DY36", "A");
             guitar.String(6, "DY46", "E");
-            guitar.String(6, "DY46", "D");
+            guitar.String(6, "DY48", "D");
 
             // Assert
             Assert.AreEqual(6, guitar.GuitarStrings.Count);
 
             var guitarString = guitar.GuitarStrings.FirstOrDefault(x => x.Number == 6);
+            Assert.AreEqual("DY48", guitarString.Gauge);
             Assert.AreEqual("D", guitarString.Tuning);
         }
 

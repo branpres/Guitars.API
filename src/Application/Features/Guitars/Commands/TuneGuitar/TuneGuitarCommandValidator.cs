@@ -14,8 +14,8 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
 
             var validStringTunings = new List<string> { "Ab", "A", "A#", "Bb", "B", "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#" };
 
-            RuleFor(x => x).NotEmpty().WithMessage("GuitarStrings collection cannot be empty.")
-                .MustAsync(HaveValidStringNumbers).WithMessage("");
+            RuleFor(x => x.Tunings).NotEmpty().WithMessage("Tunings collection cannot be empty.");
+            RuleFor(x => x).MustAsync(HaveValidStringNumbers).WithMessage("Tunings collection has invalid numbers.");
             RuleForEach(x => x.Tunings)
                 .ChildRules(c => c.RuleFor(cr => cr.Number).GreaterThan(0).WithMessage("Number must be greater than 0."))
                 .ChildRules(c => c.RuleFor(cr => cr.Tuning).NotEmpty().WithMessage("Tuning is required.")
@@ -27,7 +27,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
         {
             if (context.InstanceToValidate.Tunings == null)
             {
-                result.Errors.Add(new ValidationFailure("GuitarStrings", "GuitarStrings collection cannot be null."));
+                result.Errors.Add(new ValidationFailure("Tunings", "Tunings collection cannot be null."));
                 return false;
             }
 
@@ -36,14 +36,14 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
 
         private async Task<bool> HaveValidStringNumbers(TuneGuitarCommand guitarStringCommand, CancellationToken cancellationToken)
         {
-            var guitar = await _guitarContext.Guitar.FindAsync(new object[] { guitarStringCommand.Id }, cancellationToken);
+            var guitar = await _guitarContext.Guitar.FindAsync(guitarStringCommand.Id);
             if (guitar == null)
             {
                 return false;
             }
 
-            var invalidStringNumbers = guitarStringCommand.Tunings.Where(x => x.Number > guitar.MaxNumberOfStrings).Select(x => x.Number).Distinct();
-            return !invalidStringNumbers.Any();
+            var hasInvalidStringNumbers = guitarStringCommand.Tunings.Any(x => x.Number > guitar.MaxNumberOfStrings);
+            return !hasInvalidStringNumbers;
         }
     }
 }
