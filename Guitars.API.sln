@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "tests\D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{0293601C-AC02-4E1A-A481-3629B20F9AE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Extensions", "tests\Tests.Extensions\Tests.Extensions.csproj", "{733DB200-77D1-4738-BF63-E8BA48A714AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Extensions", "tests\Tests.Extensions\Tests.Extensions.csproj", "{733DB200-77D1-4738-BF63-E8BA48A714AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{50B69EE1-9679-4DF5-A848-0C24D265FBD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,10 @@ Global
 		{733DB200-77D1-4738-BF63-E8BA48A714AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{733DB200-77D1-4738-BF63-E8BA48A714AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{733DB200-77D1-4738-BF63-E8BA48A714AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{2C421F01-C382-42C2-90C1-4609348045F3} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
 		{0293601C-AC02-4E1A-A481-3629B20F9AE8} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
 		{733DB200-77D1-4738-BF63-E8BA48A714AE} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
+		{50B69EE1-9679-4DF5-A848-0C24D265FBD3} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97E78164-7320-48E2-91AD-E1B0A06CE4CE}

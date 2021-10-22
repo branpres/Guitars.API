@@ -1,6 +1,9 @@
 using Guitars.API.Endpoints;
 using Application;
 using Application.Data;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 

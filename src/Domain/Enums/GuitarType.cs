@@ -2,8 +2,8 @@
 {
     public enum GuitarType
     {
-        Acoustic,
-        AcousticElectric,
-        Electric
+        Acoustic = 1,
+        AcousticElectric = 2,
+        Electric = 3
     }
 }
