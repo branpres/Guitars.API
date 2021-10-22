@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 using NUnit.Framework;
 using Respawn;
-using System.Data.Common;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -40,6 +39,9 @@ namespace IntegrationTests
         }
     }
 
+    /// <summary>
+    /// Overrides the Reset method as otherwise we get a "Keyword not supported: 'port'" error when trying to create the checkpoint.
+    /// </summary>
     public class MySqlCheckpoint : Checkpoint
     {
         public override async Task Reset(string connectionString)
