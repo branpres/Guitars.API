@@ -1,9 +1,6 @@
 using Guitars.API.Endpoints;
 using Application;
 using Application.Data;
-using System.Runtime.CompilerServices;
-
-//[assembly: InternalsVisibleTo("IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,4 +39,5 @@ app.Services.ApplyMigrations();
 
 app.Run();
 
+// makes this accessible to WebApplicationFactory
 public partial class Program { }

@@ -38,9 +38,8 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
 
             // Assert
             Assert.IsNotEmpty(validationResult.Errors);
-            Assert.AreEqual("Id is invalid.", validationResult.Errors[0].ErrorMessage);
-            Assert.AreEqual("Make is required.", validationResult.Errors[1].ErrorMessage);
-            Assert.AreEqual("Model is required.", validationResult.Errors[2].ErrorMessage);
+            Assert.AreEqual("Make is required.", validationResult.Errors[0].ErrorMessage);
+            Assert.AreEqual("Model is required.", validationResult.Errors[1].ErrorMessage);
         }
     }
 }

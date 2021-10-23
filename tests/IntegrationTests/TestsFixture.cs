@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace IntegrationTests
 {
     [SetUpFixture]
-    public class TestsSetup
+    public class TestsFixture
     {
         private static IConfiguration _configuration;
         private static Checkpoint _checkpoint;

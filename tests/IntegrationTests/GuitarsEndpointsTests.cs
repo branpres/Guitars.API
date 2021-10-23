@@ -2,14 +2,11 @@
 using Application.Features.Guitars.Commands.StringGuitar;
 using Application.Features.Guitars.Commands.TuneGuitar;
 using Application.Features.Guitars.Commands.UpdateGuitar;
-using Application.Features.Guitars.Queries;
 using Domain.Enums;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -69,10 +66,10 @@ namespace IntegrationTests
                 Make = "Taylor",
                 Model = "314-CE"
             };
-
-            // Act
             var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
             var location = response.Headers.Location.OriginalString;
+
+            // Act
             response = await client.GetAsync(location);
 
             // Assert
@@ -121,10 +118,10 @@ namespace IntegrationTests
                 Make = "Taylor",
                 Model = "314-CE"
             };
+            var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
+            var id = Convert.ToInt32(await response.Content.ReadAsStringAsync());
 
             // Act
-            var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
-            var id = Convert.ToInt32(await response.Content.ReadAsStringAsync());            
             response = await client.PutAsJsonAsync("/guitars", new UpdateGuitarCommand { Id = id, Make = "New", Model = "New" });
              
             // Assert
@@ -159,10 +156,10 @@ namespace IntegrationTests
                 Make = "Taylor",
                 Model = "314-CE"
             };
-
-            // Act
             var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
             var id = await response.Content.ReadAsStringAsync();
+
+            // Act
             response = await client.DeleteAsync($"/guitars/{id}");
 
             // Assert
@@ -197,16 +194,14 @@ namespace IntegrationTests
                 Make = "Taylor",
                 Model = "314-CE"
             };
-
-            // Act
             var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
             var id = Convert.ToInt32(await response.Content.ReadAsStringAsync());
 
-            var stringGuitarCommand = new StringGuitarCommand(id, new List<StringDto>
+            // Act
+            response = await client.PostAsJsonAsync("/guitars/string", new StringGuitarCommand(id, new List<StringDto>
             {
                 new StringDto{ Number = 6, Gauge = "DY46", Tuning = "E" }
-            });
-            response = await client.PostAsJsonAsync("/guitars/string", stringGuitarCommand);
+            }));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
@@ -219,13 +214,11 @@ namespace IntegrationTests
             var guitarsApplication = new GuitarsApplication();
             var client = guitarsApplication.CreateClient();
 
-            var stringGuitarCommand = new StringGuitarCommand(0, new List<StringDto>
+            // Act
+            var response = await client.PostAsJsonAsync("/guitars/string", new StringGuitarCommand(0, new List<StringDto>
             {
                 new StringDto{ Number = 6, Gauge = "DY46", Tuning = "E" }
-            });
-
-            // Act
-            var response = await client.PostAsJsonAsync("/guitars/string", stringGuitarCommand);
+            }));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
@@ -245,16 +238,14 @@ namespace IntegrationTests
                 Make = "Taylor",
                 Model = "314-CE"
             };
-
-            // Act
             var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
             var id = Convert.ToInt32(await response.Content.ReadAsStringAsync());
 
-            var tuneGuitarCommand = new TuneGuitarCommand(id, new List<TuningDto>
+            // Act
+            response = await client.PostAsJsonAsync("/guitars/tune", new TuneGuitarCommand(id, new List<TuningDto>
             {
                 new TuningDto{ Number = 6, Tuning = "E" }
-            });
-            response = await client.PostAsJsonAsync("/guitars/tune", tuneGuitarCommand);
+            }));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
@@ -267,13 +258,11 @@ namespace IntegrationTests
             var guitarsApplication = new GuitarsApplication();
             var client = guitarsApplication.CreateClient();
 
-            var tuneGuitarCommand = new TuneGuitarCommand(0, new List<TuningDto>
+            // Act
+            var response = await client.PostAsJsonAsync("/guitars/tune", new TuneGuitarCommand(0, new List<TuningDto>
             {
                 new TuningDto{ Number = 6, Tuning = "E" }
-            });
-
-            // Act
-            var response = await client.PostAsJsonAsync("/guitars/tune", tuneGuitarCommand);
+            }));
 
             // Assert
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
