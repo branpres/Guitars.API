@@ -13,7 +13,7 @@ namespace IntegrationTests
     public class TestsSetup
     {
         private static IConfiguration _configuration;
-        private static MySqlCheckpoint _checkpoint;
+        private static Checkpoint _checkpoint;
 
         [OneTimeSetUp]
         public void RunBeforeTests()
