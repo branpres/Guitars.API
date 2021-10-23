@@ -3,7 +3,7 @@ using Application;
 using Application.Data;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("IntegrationTests")]
+//[assembly: InternalsVisibleTo("IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,3 +41,5 @@ app.MapErrorEndpoints();
 app.Services.ApplyMigrations();
 
 app.Run();
+
+public partial class Program { }

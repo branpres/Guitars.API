@@ -1,4 +1,6 @@
-﻿using Application.Data;
+﻿using Application.Common.Exceptions;
+using Application.Data;
+using Domain.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -39,7 +41,7 @@ namespace Application.Features.Guitars.Commands.TuneGuitar
             var guitar = await _guitarContext.Guitar.FindAsync(guitarStringCommand.Id);
             if (guitar == null)
             {
-                return false;
+                throw new NotFoundException(nameof(Guitar), guitarStringCommand.Id);
             }
 
             var hasInvalidStringNumbers = guitarStringCommand.Tunings.Any(x => x.Number > guitar.MaxNumberOfStrings);

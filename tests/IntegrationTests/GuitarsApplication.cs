@@ -1,14 +1,14 @@
 using Application;
 using Application.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace IntegrationTests
 {
-    class GuitarsApplication : WebApplicationFactory<Program>
+    public class GuitarsApplication : WebApplicationFactory<Program>
     {
-        protected override IHost CreateHost(IHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
@@ -17,8 +17,6 @@ namespace IntegrationTests
                 services.AddApplication();
                 services.AddData(configuration);
             });
-
-            return base.CreateHost(builder);
         }
     }
 }

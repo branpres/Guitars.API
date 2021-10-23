@@ -25,7 +25,7 @@ namespace Guitars.API.Endpoints
         internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitarCommand createGuitarCommand)
         {
             var id = await mediator.Send(createGuitarCommand);
-            return Results.CreatedAtRoute($"/guitars/{id}");
+            return Results.Created($"/guitars/{id}", id);
         }
 
         internal async static Task<IResult> ReadGuitarAsync(ISender mediator, int id)
