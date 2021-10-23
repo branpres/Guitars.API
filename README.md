@@ -1,6 +1,6 @@
 # Guitars.API
 
-A project build for my own editification to learn how to construct a minimal web API.
+A project built for my own editification to learn how to construct a minimal web API.
 
 This project was built with a vertical slice architecture/CQRS approach. A lot was also borrowed from Jason Taylor's clean architecture template as well.
 
