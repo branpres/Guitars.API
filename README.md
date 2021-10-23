@@ -6,14 +6,14 @@ This project was built with a vertical slice architecture/CQRS approach. A lot w
 
 Technologies for Application used:
 =
-Mediatr
-Entity Framework Core (using MySQL provider)
-FluentValidation
-Swashbuckle
+Mediatr\
+Entity Framework Core (using MySQL provider)\
+FluentValidation\
+Swashbuckle\
 
 Technologies for Tests used:
 =
-NUnit
-Moq
-MockQueryable.Moq
-Respawn (for integration tests)
+NUnit\
+Moq\
+MockQueryable.Moq\
+Respawn (for integration tests)\
