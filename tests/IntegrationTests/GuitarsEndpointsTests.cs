@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class GuitarsEndpointsTests : TestsBase
+    public class GuitarsEndpointsTests : TestBase
     {
         [Test]
         public async Task ShouldCreateGuitarAsync()

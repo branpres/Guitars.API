@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public abstract class TestsBase
+    public abstract class TestBase
     {
         [SetUp]
         public async Task ResetCheckpoint()
         {
-            await TestsFixture.ResetCheckpoint();
+            await TestFixture.ResetCheckpoint();
         }
     }
 }
