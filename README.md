@@ -9,11 +9,11 @@ Technologies for Application used:
 Mediatr\
 Entity Framework Core (using MySQL provider)\
 FluentValidation\
-Swashbuckle\
+Swashbuckle
 
 Technologies for Tests used:
 =
 NUnit\
 Moq\
 MockQueryable.Moq\
-Respawn (for integration tests)\
+Respawn (for integration tests)
