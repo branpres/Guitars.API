@@ -6,7 +6,7 @@ This project was built with a vertical slice architecture/CQRS approach. A fair 
 
 Technologies for Application used:
 =
-Mediatr\
+MediatR\
 Entity Framework Core (using MySQL provider)\
 FluentValidation\
 Swashbuckle
