@@ -14,7 +14,7 @@ namespace IntegrationTests
 
             builder.ConfigureServices(services =>
             {
-                services.AddApplication();
+                services.AddApplication(configuration);
                 services.AddData(configuration);
             });
         }

@@ -1,12 +1,13 @@
 ﻿using Domain.Common;
 using Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace Application.Data
 {
-    public class GuitarsContext : DbContext
+    public class GuitarsContext : IdentityDbContext
     {
         public GuitarsContext() { }
 

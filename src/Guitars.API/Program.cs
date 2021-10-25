@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen(c =>
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
 // configure dependency injection
-builder.Services.AddApplication();
+builder.Services.AddApplication(configuration);
 builder.Services.AddData(configuration);
 
 var app = builder.Build();
@@ -27,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Guitars.API v1"));
 }
+
+app.UseAuthentication();
 
 app.UseHttpsRedirection();
 
