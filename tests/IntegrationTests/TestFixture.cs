@@ -28,6 +28,7 @@ namespace IntegrationTests
                 TablesToIgnore = new[] { "__EFMigrationsHistory" }
             };
 
+            // connect to test database
             var services = new ServiceCollection();
             services.AddData(_configuration);
             services.BuildServiceProvider().ApplyMigrations();

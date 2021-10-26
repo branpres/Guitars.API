@@ -1,6 +1,9 @@
 using Guitars.API.Endpoints;
 using Application;
 using Application.Data;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Application.Common.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +14,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
+    c.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme.ToLowerInvariant(),
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
 });
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
 // configure dependency injection
+builder.Services.AddAuthentication(configuration);
 builder.Services.AddApplication(configuration);
 builder.Services.AddData(configuration);
 
@@ -29,6 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
+//app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
