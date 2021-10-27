@@ -26,7 +26,7 @@ namespace Application.UnitTests.Common.Behaviors
         {
             // Arrange
             var createGuitarCommand = new CreateGuitarCommand();
-            var validators = new List<CreateGuitarCommandValidator> { new CreateGuitarCommandValidator() };
+            var validators = new List<LoginCommandValidator> { new CreateGuitarCommandValidator() };
             var validationBehavior = new ValidationBehavior<CreateGuitarCommand, int>(validators);
 
             // Act
@@ -52,7 +52,7 @@ namespace Application.UnitTests.Common.Behaviors
                 Make = "Taylor",
                 Model = "314-CE"
             };
-            var validators = new List<CreateGuitarCommandValidator> { new CreateGuitarCommandValidator() };
+            var validators = new List<LoginCommandValidator> { new CreateGuitarCommandValidator() };
             var validationBehavior = new ValidationBehavior<CreateGuitarCommand, int>(validators);
 
             // Act

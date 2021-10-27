@@ -3,7 +3,7 @@ using Application;
 using Application.Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Application.Common.Authentication;
+using Application.Features.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +48,7 @@ app.UseHttpsRedirection();
 
 app.UseExceptionHandler("/errors");
 
-app.MapGuitarEndpoints();
+app.MapGuitarsEndpoints();
 app.MapErrorEndpoints();
 
 app.Services.ApplyMigrations();

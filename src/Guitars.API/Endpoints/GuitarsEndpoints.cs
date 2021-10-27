@@ -11,7 +11,7 @@ namespace Guitars.API.Endpoints
 {
     internal static class GuitarsEndpoints
     {
-        internal static void MapGuitarEndpoints(this WebApplication app)
+        internal static void MapGuitarsEndpoints(this WebApplication app)
         {
             app.MapPost("/guitars", CreateGuitarAsync);
             app.MapGet("/guitars/{id}", ReadGuitarAsync);

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Application.Common.Authentication
+namespace Application.Features.Authentication
 {
     public static class Configuration
     {
