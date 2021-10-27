@@ -43,6 +43,10 @@ namespace Application.Authentication
 
             services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<GuitarsContext>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddAuthorization();
         }
     }
 }

@@ -13,13 +13,13 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapGuitarsEndpoints(this WebApplication app)
         {
-            app.MapPost("/guitars", CreateGuitarAsync);
-            app.MapGet("/guitars/{id}", ReadGuitarAsync);
-            app.MapGet("/guitars", ReadGuitarsAsync);
-            app.MapPut("/guitars", UpdateGuitarAsync);
-            app.MapDelete("/guitars/{id}", DeleteGuitarAsync);
-            app.MapPost("/guitars/string", StringGuitarAsync);
-            app.MapPost("/guitars/tune", TuneGuitarAsync);
+            app.MapPost("/guitars", CreateGuitarAsync).RequireAuthorization();
+            app.MapGet("/guitars/{id}", ReadGuitarAsync).RequireAuthorization();
+            app.MapGet("/guitars", ReadGuitarsAsync).RequireAuthorization();
+            app.MapPut("/guitars", UpdateGuitarAsync).RequireAuthorization();
+            app.MapDelete("/guitars/{id}", DeleteGuitarAsync).RequireAuthorization();
+            app.MapPost("/guitars/string", StringGuitarAsync).RequireAuthorization();
+            app.MapPost("/guitars/tune", TuneGuitarAsync).RequireAuthorization();
         }
 
         internal async static Task<IResult> CreateGuitarAsync(ISender mediator, CreateGuitarCommand createGuitarCommand)
