@@ -2,9 +2,9 @@
 
 namespace Application.Features.Guitars.Commands.CreateGuitar
 {
-    public class LoginCommandValidator : AbstractValidator<CreateGuitarCommand>
+    public class CreateGuitarCommandValidator : AbstractValidator<CreateGuitarCommand>
     {
-        public LoginCommandValidator()
+        public CreateGuitarCommandValidator()
         {
             RuleFor(x => x.GuitarType).IsInEnum().WithMessage("Guitar Type is invalid.");
             RuleFor(x => x.MaxNumberOfStrings).GreaterThan(0).WithMessage("Max number of strings must be greater than 0.");

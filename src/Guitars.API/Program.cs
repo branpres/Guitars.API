@@ -1,9 +1,9 @@
 using Guitars.API.Endpoints;
 using Application;
+using Application.Authentication;
 using Application.Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Application.Features.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +29,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", o
 
 // configure dependency injection
 builder.Services.AddAuthentication(configuration);
-builder.Services.AddApplication(configuration);
+builder.Services.AddApplication();
 builder.Services.AddData(configuration);
 
 var app = builder.Build();

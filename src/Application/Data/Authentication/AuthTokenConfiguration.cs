@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Application.Features.Authentication.Data
+namespace Application.Data.Authentication
 {
     public class AuthTokenConfiguration : IEntityTypeConfiguration<AuthToken>
     {

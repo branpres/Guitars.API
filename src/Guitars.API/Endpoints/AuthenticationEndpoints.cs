@@ -1,4 +1,4 @@
-﻿using Application.Features.Authentication.Commands.Login;
+﻿using Application.Authentication.Commands.Login;
 using MediatR;
 
 namespace Guitars.API.Endpoints

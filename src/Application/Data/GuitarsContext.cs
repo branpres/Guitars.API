@@ -1,4 +1,4 @@
-﻿using Application.Features.Authentication.Data;
+﻿using Application.Data.Authentication;
 using Domain.Common;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

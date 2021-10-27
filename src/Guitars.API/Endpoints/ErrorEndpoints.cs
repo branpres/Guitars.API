@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Authentication.Exceptions;
+using Application.Common.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -25,6 +26,16 @@ namespace Guitars.API.Endpoints
             if (context.Error is NotFoundException notFoundException)
             {
                 return Results.NotFound(notFoundException.Message);
+            }
+
+            if (context.Error is InvalidLoginException)
+            {
+                return Results.BadRequest("Invalid login");
+            }
+
+            if (context.Error is TokenValidationException tokenValidationException)
+            {
+                return Results.BadRequest(tokenValidationException.Message);
             }
 
             return Results.Content($"<div>An error occurred!</div><div>Error Message: {context.Error.Message}</div><div>Stack Trace: {context.Error.StackTrace}</div>", "text/html");

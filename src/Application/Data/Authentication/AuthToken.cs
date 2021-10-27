@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Application.Features.Authentication.Data
+namespace Application.Data.Authentication
 {
     public class AuthToken
     {
@@ -10,13 +10,11 @@ namespace Application.Features.Authentication.Data
 
         public string JwtId { get; set; }
 
-        public string Token { get; set; }
+        public bool IsUsable { get; set; } = true;
 
-        public bool IsUsable { get; set; }
+        public bool IsRevoked { get; set; } = false;
 
-        public bool IsRevoked { get; set; }
-
-        public DateTime ExpiresOn { get; set; }
+        public DateTime RefreshTokenExpiresOn { get; set; }
 
         public DateTime Created { get; set; } = DateTime.UtcNow;
     }
