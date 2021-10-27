@@ -38,6 +38,11 @@ namespace Guitars.API.Endpoints
                 return Results.BadRequest(tokenValidationException.Message);
             }
 
+            if (context.Error is UnauthenticatedException)
+            {
+                return Results.Unauthorized();
+            }
+
             return Results.Content($"<div>An error occurred!</div><div>Error Message: {context.Error.Message}</div><div>Stack Trace: {context.Error.StackTrace}</div>", "text/html");
         }
     }

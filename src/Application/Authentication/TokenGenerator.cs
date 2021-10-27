@@ -1,9 +1,11 @@
 ﻿using Application.Authentication.Exceptions;
 using Application.Data;
 using Application.Data.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Application.Authentication
@@ -17,14 +19,14 @@ namespace Application.Authentication
         private const int TOKEN_EXPIRE_TIME_IN_MINUTES = 30;
         private const int REFRESH_TOKEN_EXPIRE_TIME_IN_MINUTES = 120;
 
-        internal TokenGenerator(IConfiguration configuration, GuitarsContext guitarsContext, TokenValidationParameters tokenValidationParameters)
+        public TokenGenerator(IConfiguration configuration, GuitarsContext guitarsContext, TokenValidationParameters tokenValidationParameters)
         {
             _configuration = configuration;
             _guitarsContext = guitarsContext;
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<string> GenerateTokenAsync(string userId, CancellationToken cancellationToken)
+        public async Task<string> GenerateTokenAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -33,13 +35,13 @@ namespace Application.Authentication
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 // add claims
-                //Subject = new ClaimsIdentity(new[]
-                //{
-                //    new Claim("Id", user.Id),
-                //    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                //    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                //}),
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim("Id", user.Id),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(TOKEN_EXPIRE_TIME_IN_MINUTES),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -49,7 +51,7 @@ namespace Application.Authentication
 
             var authToken = new AuthToken
             {
-                UserId = userId,
+                UserId = user.Id,
                 JwtId = token.Id,
                 RefreshTokenExpiresOn = DateTime.UtcNow.AddMinutes(REFRESH_TOKEN_EXPIRE_TIME_IN_MINUTES)
             };
@@ -59,7 +61,7 @@ namespace Application.Authentication
             return jwt;
         }
 
-        public async Task<string> RefreshTokenAsync(string userId, string jwt)
+        public async Task<string> RefreshTokenAsync(IdentityUser user, string jwt, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -73,7 +75,7 @@ namespace Application.Authentication
                     var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
                     if (!result)
                     {
-                        throw new TokenValidationException("Invalid token");
+                        throw new TokenValidationException("Invalid token. Please login again to receive a new token.");
                     }
                 }
 
@@ -82,11 +84,31 @@ namespace Application.Authentication
 
                 if (DateTime.UtcNow > expiresOn)
                 {
-                    throw new TokenValidationException("Token has expired");
+                    throw new TokenValidationException("Token has expired. Please login again to receive a new token.");
                 }
 
                 // retrieve info from database to refresh
-                return "";
+                var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == user.Id && x.JwtId == validatedToken.Id);
+                if (authToken == null)
+                {
+                    throw new TokenValidationException("Token not found");
+                }
+
+                if (!authToken.IsUsable)
+                {
+                    throw new TokenValidationException("Token no longer usable. Please login again to receive a new token.");
+                }
+
+                if (authToken.IsRevoked)
+                {
+                    throw new TokenValidationException("Token has been revoked");
+                }
+
+                authToken.IsUsable = false;
+                await _guitarsContext.SaveChangesAsync(cancellationToken);
+
+                // validations have passed, so we can generate a new token for the user
+                return await GenerateTokenAsync(user, cancellationToken);
             }
             catch (Exception ex)
             {

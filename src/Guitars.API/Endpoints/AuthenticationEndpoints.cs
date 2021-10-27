@@ -1,4 +1,5 @@
 ﻿using Application.Authentication.Commands.Login;
+using Application.Authentication.Commands.RefreshToken;
 using MediatR;
 
 namespace Guitars.API.Endpoints
@@ -7,12 +8,19 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapAuthenticationEndpoints(this WebApplication app)
         {
-            app.MapPost("/authentication/login", Login);
+            app.MapPost("/authentication/login", Login).AllowAnonymous();
+            app.MapPost("/authentication/refreshtoken", RefreshToken).RequireAuthorization();
         }
 
-        internal async static Task<IResult> Login(ISender mediator, string email, string password)
+        internal async static Task<IResult> Login(ISender mediator, LoginCommand loginCommand)
         {
-            var jwt = await mediator.Send(new LoginCommand(email, password));
+            var jwt = await mediator.Send(loginCommand);
+            return Results.Ok(jwt);
+        }
+
+        internal async static Task<IResult> RefreshToken(ISender mediator)
+        {
+            var jwt = await mediator.Send(new RefreshTokenCommand());
             return Results.Ok(jwt);
         }
     }
