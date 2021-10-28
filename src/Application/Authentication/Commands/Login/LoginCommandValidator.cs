@@ -6,7 +6,7 @@ namespace Application.Authentication.Commands.Login
     {
         public LoginCommandValidator()
         {
-            RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required.");
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName is required.");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
         }
     }

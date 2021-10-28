@@ -1,4 +1,5 @@
 ﻿using Application.Data;
+using Application.Data.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -41,12 +42,17 @@ namespace Application.Authentication
 
             services.AddSingleton(tokenValidationParameters);
 
-            services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<GuitarsContext>();
 
             services.AddHttpContextAccessor();
 
             services.AddAuthorization();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            IdentityDbContextSeed.SeedAsync(userManager, roleManager).GetAwaiter().GetResult();
         }
     }
 }

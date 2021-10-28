@@ -4,6 +4,7 @@ using Application.Authentication;
 using Application.Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +24,28 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT",
         Description = "JWT Authorization header using the Bearer scheme."
     });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
 });
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
 
 // configure dependency injection
-builder.Services.AddAuthentication(configuration);
 builder.Services.AddApplication();
 builder.Services.AddData(configuration);
+builder.Services.AddAuthentication(configuration);
 
 var app = builder.Build();
 
@@ -48,6 +63,7 @@ app.UseHttpsRedirection();
 
 app.UseExceptionHandler("/errors");
 
+app.MapAuthenticationEndpoints();
 app.MapGuitarsEndpoints();
 app.MapErrorEndpoints();
 

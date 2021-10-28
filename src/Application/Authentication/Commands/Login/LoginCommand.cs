@@ -6,9 +6,9 @@ namespace Application.Authentication.Commands.Login
 {
     public class LoginCommand : IRequest<string>
     {
-        public string Email { get; private set; }
+        public string UserName { get; set; }
 
-        public string Password { get; private set; }
+        public string Password { get; set; }
     }
 
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
@@ -24,7 +24,7 @@ namespace Application.Authentication.Commands.Login
 
         public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByNameAsync(request.UserName);
             if (user == null)
             {
                 throw new InvalidLoginException();
