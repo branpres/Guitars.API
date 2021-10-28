@@ -24,7 +24,7 @@ namespace Application.Authentication.Commands.RefreshToken
 
         public async Task<string> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var userId = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var userId = _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Id").Value;
             var user = await _userManager.FindByIdAsync(userId);
             var jwt = _contextAccessor.HttpContext.Request.Headers.Authorization.First().Replace("Bearer ", string.Empty);
 

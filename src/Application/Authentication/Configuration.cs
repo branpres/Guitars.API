@@ -21,11 +21,16 @@ namespace Application.Authentication
                 ValidIssuer = jwtConfiguration["Issuer"],
                 ValidateAudience = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfiguration["Secret"])),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfiguration["Key"])),
                 RequireExpirationTime = false,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+
+            services.AddSingleton(tokenValidationParameters);
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<GuitarsContext>();
 
             services.AddAuthentication(options =>
             {
@@ -38,16 +43,11 @@ namespace Application.Authentication
                 jwt.SaveToken = true;
                 jwt.ClaimsIssuer = jwtConfiguration["Issuer"];
                 jwt.TokenValidationParameters = tokenValidationParameters;
-            });
-
-            services.AddSingleton(tokenValidationParameters);
-
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<GuitarsContext>();
-
-            services.AddHttpContextAccessor();
+            });                        
 
             services.AddAuthorization();
+
+            services.AddHttpContextAccessor();
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();

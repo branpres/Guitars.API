@@ -6,6 +6,7 @@ using Application.Features.Guitars.Commands.UpdateGuitar;
 using Application.Features.Guitars.Queries.ReadGuitar;
 using Application.Features.Guitars.Queries.ReadGuitars;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Guitars.API.Endpoints
 {

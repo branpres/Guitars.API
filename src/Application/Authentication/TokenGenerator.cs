@@ -30,8 +30,9 @@ namespace Application.Authentication
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtConfiguration")["Secret"]);
+            var jwtConfiguration = _configuration.GetSection("JwtConfiguration");
 
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfiguration["Key"]));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 // add claims
@@ -43,7 +44,9 @@ namespace Application.Authentication
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(TOKEN_EXPIRE_TIME_IN_MINUTES),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature),
+                IssuedAt = DateTime.UtcNow,
+                Issuer = jwtConfiguration["Issuer"]
             };
 
             var token = jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
@@ -112,7 +115,7 @@ namespace Application.Authentication
             }
             catch (Exception ex)
             {
-                throw new TokenValidationException("Invalid token", ex);
+                throw;
             }
         }
 

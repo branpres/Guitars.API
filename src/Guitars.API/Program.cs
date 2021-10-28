@@ -4,7 +4,6 @@ using Application.Authentication;
 using Application.Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,29 +14,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
-    c.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme.ToLowerInvariant(),
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
         In = ParameterLocation.Header,
         Name = "Authorization",
-        BearerFormat = "JWT",
         Description = "JWT Authorization header using the Bearer scheme."
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
             {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
+                Reference = new OpenApiReference
+                {                    
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme,
                 }
-            });
+            },
+            new List<string>()
+        }
+    });
 });
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
