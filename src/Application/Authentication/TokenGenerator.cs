@@ -1,4 +1,5 @@
 ﻿using Application.Authentication.Exceptions;
+using Application.Authentication.Extensions;
 using Application.Data;
 using Application.Data.Authentication;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,7 @@ namespace Application.Authentication
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<string> GenerateTokenAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<TokenGenerationResult> GenerateTokenAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -57,10 +58,14 @@ namespace Application.Authentication
             await _guitarsContext.AuthToken.AddAsync(authToken);
             await _guitarsContext.SaveChangesAsync(cancellationToken);
 
-            return jwt;
+            return new TokenGenerationResult
+            {
+                Token = token,
+                Jwt = jwt,
+            };
         }
 
-        public async Task<string> RefreshTokenAsync(string jwt, CancellationToken cancellationToken)
+        public async Task<TokenGenerationResult> RefreshTokenAsync(string jwt, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -131,5 +136,12 @@ namespace Application.Authentication
 
             return claims;
         }        
+    }
+
+    public class TokenGenerationResult
+    {
+        public SecurityToken Token { get; set; }
+
+        public string Jwt { get; set; }
     }
 }

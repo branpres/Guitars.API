@@ -1,4 +1,6 @@
 ﻿using Application.Authentication.Exceptions;
+using Application.Authentication.Extensions;
+using Application.Data;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,12 +17,14 @@ namespace Application.Authentication.Commands.Login
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly GuitarsContext _guitarsContext;
         private readonly TokenGenerator _tokenGenerator;
 
-        public LoginCommandHandler(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, TokenGenerator tokenGenerator)
+        public LoginCommandHandler(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, GuitarsContext guitarsContext, TokenGenerator tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _guitarsContext = guitarsContext;
             _tokenGenerator = tokenGenerator;
         }
 
@@ -42,11 +46,19 @@ namespace Application.Authentication.Commands.Login
                 throw new InvalidLoginException();
             }
 
-            await _signInManager.SignInAsync(user, false);
-            
             var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
-            var jwt = await _tokenGenerator.GenerateTokenAsync(claimsPrincipal, cancellationToken);
-            return jwt;
+            var tokenGenerationResult = await _tokenGenerator.GenerateTokenAsync(claimsPrincipal, cancellationToken);
+
+            _guitarsContext.UserLogins.Add(new IdentityUserLogin<string>
+            {
+                LoginProvider = "Identity",
+                ProviderKey = tokenGenerationResult.Token.Id,
+                ProviderDisplayName = claimsPrincipal.GetUserName(),
+                UserId = user.Id
+            });
+            await _guitarsContext.SaveChangesAsync(cancellationToken);
+
+            return tokenGenerationResult.Jwt;
         }
     }
 }

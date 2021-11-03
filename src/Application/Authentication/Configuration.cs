@@ -1,5 +1,7 @@
-﻿using Application.Data;
+﻿using Application.Authentication.Behaviors;
+using Application.Data;
 using Application.Data.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +68,8 @@ namespace Application.Authentication
             });
 
             services.AddHttpContextAccessor();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthenticationBehavior<,>));
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
