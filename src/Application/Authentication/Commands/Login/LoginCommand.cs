@@ -14,11 +14,13 @@ namespace Application.Authentication.Commands.Login
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly TokenGenerator _tokenGenerator;
 
-        public LoginCommandHandler(UserManager<IdentityUser> userManager, TokenGenerator tokenGenerator)
+        public LoginCommandHandler(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, TokenGenerator tokenGenerator)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _tokenGenerator = tokenGenerator;
         }
 
@@ -30,13 +32,18 @@ namespace Application.Authentication.Commands.Login
                 throw new InvalidLoginException();
             }
 
-            if (!await _userManager.CheckPasswordAsync(user, request.Password))
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
+            if (signInResult.IsLockedOut)
+            {
+                throw new UserLockedOutException();
+            }
+            else if (!signInResult.Succeeded)
             {
                 throw new InvalidLoginException();
             }
-
-            var jwt = await _tokenGenerator.GenerateTokenAsync(user, cancellationToken);
-
+            
+            var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+            var jwt = await _tokenGenerator.GenerateTokenAsync(claimsPrincipal, cancellationToken);
             return jwt;
         }
     }

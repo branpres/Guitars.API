@@ -9,10 +9,10 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapErrorEndpoints(this WebApplication app)
         {
-            app.Map("/errors", HandleError);
+            app.Map("/errors", HandleErrors);
         }
 
-        internal static IResult HandleError(HttpContext httpContext)
+        internal static IResult HandleErrors(HttpContext httpContext)
         {
             // TODO: log the error
 
@@ -31,6 +31,11 @@ namespace Guitars.API.Endpoints
             if (context.Error is InvalidLoginException)
             {
                 return Results.BadRequest("Invalid login");
+            }
+
+            if (context.Error is UserLockedOutException)
+            {
+                return Results.BadRequest("User account is locked out");
             }
 
             if (context.Error is TokenValidationException tokenValidationException)

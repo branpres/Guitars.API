@@ -28,6 +28,7 @@ namespace Application.Authentication
             };
 
             services.AddSingleton(tokenValidationParameters);
+            services.AddScoped<TokenGenerator>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<GuitarsContext>();

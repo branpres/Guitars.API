@@ -1,7 +1,6 @@
 ﻿using Application.Authentication.Exceptions;
 using Application.Data;
 using Application.Data.Authentication;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,14 +18,17 @@ namespace Application.Authentication
         private const int TOKEN_EXPIRE_TIME_IN_MINUTES = 30;
         private const int REFRESH_TOKEN_EXPIRE_TIME_IN_MINUTES = 120;
 
-        public TokenGenerator(IConfiguration configuration, GuitarsContext guitarsContext, TokenValidationParameters tokenValidationParameters)
+        public TokenGenerator(
+            IConfiguration configuration,
+            GuitarsContext guitarsContext,
+            TokenValidationParameters tokenValidationParameters)
         {
             _configuration = configuration;
             _guitarsContext = guitarsContext;
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public async Task<string> GenerateTokenAsync(IdentityUser user, CancellationToken cancellationToken)
+        public async Task<string> GenerateTokenAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -36,13 +38,7 @@ namespace Application.Authentication
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 // add claims
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                }),
+                Subject = new ClaimsIdentity(GetClaims(claimsPrincipal)),
                 Expires = DateTime.UtcNow.AddMinutes(TOKEN_EXPIRE_TIME_IN_MINUTES),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature),
                 IssuedAt = DateTime.UtcNow,
@@ -54,7 +50,7 @@ namespace Application.Authentication
 
             var authToken = new AuthToken
             {
-                UserId = user.Id,
+                UserId = claimsPrincipal.GetUserId(),
                 JwtId = token.Id,
                 RefreshTokenExpiresOn = DateTime.UtcNow.AddMinutes(REFRESH_TOKEN_EXPIRE_TIME_IN_MINUTES)
             };
@@ -64,7 +60,7 @@ namespace Application.Authentication
             return jwt;
         }
 
-        public async Task<string> RefreshTokenAsync(IdentityUser user, string jwt, CancellationToken cancellationToken)
+        public async Task<string> RefreshTokenAsync(string jwt, CancellationToken cancellationToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
@@ -91,7 +87,7 @@ namespace Application.Authentication
                 }
 
                 // retrieve info from database to refresh
-                var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == user.Id && x.JwtId == validatedToken.Id);
+                var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == claimsPrincipal.GetUserId() && x.JwtId == validatedToken.Id);
                 if (authToken == null)
                 {
                     throw new TokenValidationException("Token not found");
@@ -111,9 +107,9 @@ namespace Application.Authentication
                 await _guitarsContext.SaveChangesAsync(cancellationToken);
 
                 // validations have passed, so we can generate a new token for the user
-                return await GenerateTokenAsync(user, cancellationToken);
+                return await GenerateTokenAsync(claimsPrincipal, cancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -123,5 +119,17 @@ namespace Application.Authentication
         {
             return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTime);
         }
+
+        private static List<Claim> GetClaims(ClaimsPrincipal claimsPrincipal)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            claims.AddRange(claimsPrincipal.Claims);
+
+            return claims;
+        }        
     }
 }

@@ -3,7 +3,6 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Application.Common.Behaviors;
-using Application.Authentication;
 
 namespace Application
 {
@@ -13,8 +12,7 @@ namespace Application
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddScoped<TokenGenerator>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));            
         }
     }
 }
