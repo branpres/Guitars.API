@@ -24,5 +24,11 @@
         {
             public const string HAS_PERMISSION = "Has Permission";
         }
+
+        public static class Policies
+        {
+            public const string WRITE = "Write";
+            public const string READ = "Read";
+        }
     }
 }

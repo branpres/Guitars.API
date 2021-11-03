@@ -44,9 +44,26 @@ namespace Application.Authentication
                 jwt.SaveToken = true;
                 jwt.ClaimsIssuer = jwtConfiguration["Issuer"];
                 jwt.TokenValidationParameters = tokenValidationParameters;
-            });                        
+            });
 
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Constants.Policies.WRITE, policy =>
+                {
+                    policy.RequireClaim(
+                        Constants.ClaimTypes.HAS_PERMISSION,
+                        Constants.Claims.REFRESH_TOKEN,
+                        Constants.Claims.CREATE_GUITAR,
+                        Constants.Claims.UPDATE_GUITAR,
+                        Constants.Claims.DELETE_GUITAR,
+                        Constants.Claims.STRING_GUITAR,
+                        Constants.Claims.TUNE_GUITAR);
+                });
+                options.AddPolicy(Constants.Policies.READ, policy =>
+                {
+                    policy.RequireClaim(Constants.ClaimTypes.HAS_PERMISSION, Constants.Claims.READ_GUITAR);
+                });
+            });
 
             services.AddHttpContextAccessor();
 
