@@ -41,6 +41,8 @@ namespace Application.Authentication.Commands.Login
             {
                 throw new InvalidLoginException();
             }
+
+            await _signInManager.SignInAsync(user, false);
             
             var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
             var jwt = await _tokenGenerator.GenerateTokenAsync(claimsPrincipal, cancellationToken);
