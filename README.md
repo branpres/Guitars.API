@@ -9,7 +9,8 @@ Technologies for Application used:
 MediatR\
 Entity Framework Core (using MySQL provider)\
 FluentValidation\
-Swashbuckle
+Swashbuckle\
+Microsoft Identity with JSON Web Tokens for Authentication/Authorization
 
 Technologies for Tests used:
 =
