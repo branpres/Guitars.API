@@ -1,5 +1,4 @@
-﻿using Application.Authentication;
-using Application.Authentication.Commands.Login;
+﻿using Application.Authentication.Commands.Login;
 using Application.Authentication.Commands.Logout;
 using Application.Authentication.Commands.RefreshToken;
 using MediatR;
