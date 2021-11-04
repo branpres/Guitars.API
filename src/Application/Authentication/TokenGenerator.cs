@@ -69,55 +69,48 @@ namespace Application.Authentication
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
-            try
+            // validate current token
+            var claimsPrincipal = jwtSecurityTokenHandler.ValidateToken(jwt, _tokenValidationParameters, out var validatedToken);
+
+            if (validatedToken is JwtSecurityToken jwtSecurityToken)
             {
-                // validate current token
-                var claimsPrincipal = jwtSecurityTokenHandler.ValidateToken(jwt, _tokenValidationParameters, out var validatedToken);
-
-                if (validatedToken is JwtSecurityToken jwtSecurityToken)
+                var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+                if (!result)
                 {
-                    var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
-                    if (!result)
-                    {
-                        throw new TokenValidationException("Invalid token. Please login again to receive a new token.");
-                    }
+                    throw new TokenValidationException("Invalid token. Please login again to receive a new token.");
                 }
-
-                var exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                var expiresOn = ConvertUnixTimeToDateTime(exp);
-
-                if (DateTime.UtcNow > expiresOn)
-                {
-                    throw new TokenValidationException("Token has expired. Please login again to receive a new token.");
-                }
-
-                // retrieve info from database to refresh
-                var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == claimsPrincipal.GetUserId() && x.JwtId == validatedToken.Id);
-                if (authToken == null)
-                {
-                    throw new TokenValidationException("Token not found");
-                }
-
-                if (!authToken.IsUsable)
-                {
-                    throw new TokenValidationException("Token no longer usable. Please login again to receive a new token.");
-                }
-
-                if (authToken.IsRevoked)
-                {
-                    throw new TokenValidationException("Token has been revoked");
-                }
-
-                authToken.IsUsable = false;
-                await _guitarsContext.SaveChangesAsync(cancellationToken);
-
-                // validations have passed, so we can generate a new token for the user
-                return await GenerateTokenAsync(claimsPrincipal, cancellationToken);
             }
-            catch (Exception)
+
+            var exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiresOn = ConvertUnixTimeToDateTime(exp);
+
+            if (DateTime.UtcNow > expiresOn)
             {
-                throw;
+                throw new TokenValidationException("Token has expired. Please login again to receive a new token.");
             }
+
+            // retrieve info from database to refresh
+            var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == claimsPrincipal.GetUserId() && x.JwtId == validatedToken.Id);
+            if (authToken == null)
+            {
+                throw new TokenValidationException("Token not found");
+            }
+
+            if (!authToken.IsUsable)
+            {
+                throw new TokenValidationException("Token no longer usable. Please login again to receive a new token.");
+            }
+
+            if (authToken.IsRevoked)
+            {
+                throw new TokenValidationException("Token has been revoked");
+            }
+
+            authToken.IsUsable = false;
+            await _guitarsContext.SaveChangesAsync(cancellationToken);
+
+            // validations have passed, so we can generate a new token for the user
+            return await GenerateTokenAsync(claimsPrincipal, cancellationToken);
         }
 
         private static DateTime ConvertUnixTimeToDateTime(long unixTime)
