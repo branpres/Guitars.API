@@ -81,14 +81,6 @@ namespace Application.Authentication
                 }
             }
 
-            var exp = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-            var expiresOn = ConvertUnixTimeToDateTime(exp);
-
-            if (DateTime.UtcNow > expiresOn)
-            {
-                throw new TokenValidationException("Token has expired. Please login again to receive a new token.");
-            }
-
             // retrieve info from database to refresh
             var authToken = _guitarsContext.AuthToken.FirstOrDefault(x => x.UserId == claimsPrincipal.GetUserId() && x.JwtId == validatedToken.Id);
             if (authToken == null)
@@ -111,11 +103,6 @@ namespace Application.Authentication
 
             // validations have passed, so we can generate a new token for the user
             return await GenerateTokenAsync(claimsPrincipal, cancellationToken);
-        }
-
-        private static DateTime ConvertUnixTimeToDateTime(long unixTime)
-        {
-            return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTime);
         }
 
         private static List<Claim> GetClaims(ClaimsPrincipal claimsPrincipal)
