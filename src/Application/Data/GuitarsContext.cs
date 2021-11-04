@@ -1,12 +1,14 @@
-﻿using Domain.Common;
+﻿using Application.Data.Authentication;
+using Domain.Common;
 using Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace Application.Data
 {
-    public class GuitarsContext : DbContext
+    public class GuitarsContext : IdentityDbContext
     {
         public GuitarsContext() { }
 
@@ -15,6 +17,8 @@ namespace Application.Data
         public virtual DbSet<Guitar> Guitar { get; set; }
 
         public virtual DbSet<GuitarString> GuitarString { get; set; }
+
+        public virtual DbSet<AuthToken> AuthToken { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

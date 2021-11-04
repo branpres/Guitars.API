@@ -18,8 +18,7 @@ namespace IntegrationTests
         public async Task ShouldCreateGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -40,8 +39,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveBadRequestResultWhenTryingToCreateGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand { };
 
@@ -56,8 +54,7 @@ namespace IntegrationTests
         public async Task ShouldReadGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -80,8 +77,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveNotFoundResultWhenTryingToReadGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.GetAsync("/guitars/0");
@@ -94,8 +90,7 @@ namespace IntegrationTests
         public async Task ShouldReadGuitarsAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.GetAsync("/guitars");
@@ -108,8 +103,7 @@ namespace IntegrationTests
         public async Task ShouldUpdateGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -132,8 +126,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveNotFoundResultWhenTryingToUpdateGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.PutAsJsonAsync("/guitars", new UpdateGuitarCommand { Id = 0, Make = "New", Model = "New" });
@@ -146,8 +139,7 @@ namespace IntegrationTests
         public async Task ShouldDeleteGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -170,8 +162,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveNotFoundResultWhenTryingToDeleteGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.DeleteAsync($"/guitars/0");
@@ -184,8 +175,7 @@ namespace IntegrationTests
         public async Task ShouldStringGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -211,8 +201,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveNotFoundResultWhenTryingToStringGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.PostAsJsonAsync("/guitars/string", new StringGuitarCommand(0, new List<StringDto>
@@ -228,8 +217,7 @@ namespace IntegrationTests
         public async Task ShouldTuneGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             var createGuitarCommand = new CreateGuitarCommand
             {
@@ -255,8 +243,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveNotFoundResultWhenTryingToTuneGuitarAsync()
         {
             // Arrange
-            var guitarsApplication = new GuitarsApplication();
-            var client = guitarsApplication.CreateClient();
+            var client = await GetHttpClientAsync();
 
             // Act
             var response = await client.PostAsJsonAsync("/guitars/tune", new TuneGuitarCommand(0, new List<TuningDto>

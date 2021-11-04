@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Authentication.Exceptions;
+using Application.Common.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -8,10 +9,10 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapErrorEndpoints(this WebApplication app)
         {
-            app.Map("/errors", HandleError);
+            app.Map("/errors", HandleErrors);
         }
 
-        internal static IResult HandleError(HttpContext httpContext)
+        internal static IResult HandleErrors(HttpContext httpContext)
         {
             // TODO: log the error
 
@@ -25,6 +26,26 @@ namespace Guitars.API.Endpoints
             if (context.Error is NotFoundException notFoundException)
             {
                 return Results.NotFound(notFoundException.Message);
+            }
+
+            if (context.Error is InvalidLoginException)
+            {
+                return Results.BadRequest("Invalid login");
+            }
+
+            if (context.Error is UserLockedOutException)
+            {
+                return Results.BadRequest("User account is locked out");
+            }
+
+            if (context.Error is TokenValidationException tokenValidationException)
+            {
+                return Results.BadRequest(tokenValidationException.Message);
+            }
+
+            if (context.Error is UnauthenticatedException)
+            {
+                return Results.Unauthorized();
             }
 
             return Results.Content($"<div>An error occurred!</div><div>Error Message: {context.Error.Message}</div><div>Stack Trace: {context.Error.StackTrace}</div>", "text/html");

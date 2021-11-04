@@ -3,44 +3,21 @@ using System;
 using Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Application.Data.Migrations
 {
     [DbContext(typeof(GuitarsContext))]
-    partial class GuitarsContextModelSnapshot : ModelSnapshot
+    [Migration("20211025175502_AddIdentitySupport")]
+    partial class AddIdentitySupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "6.0.0-preview.3.21201.2");
-
-            modelBuilder.Entity("Application.Data.Authentication.AuthToken", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<string>("JwtId")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsUsable")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("RefreshTokenExpiresOn")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("UserId", "JwtId");
-
-                    b.ToTable("AuthToken");
-                });
 
             modelBuilder.Entity("Domain.Models.Guitar", b =>
                 {
@@ -307,17 +284,6 @@ namespace Application.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Application.Data.Authentication.AuthToken", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.GuitarString", b =>
