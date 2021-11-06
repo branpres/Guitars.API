@@ -16,11 +16,6 @@ namespace Application.UnitTests.Common.Behaviors
 {
     public class ValidationBehaviorTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void ShouldThrowValidationException()
         {

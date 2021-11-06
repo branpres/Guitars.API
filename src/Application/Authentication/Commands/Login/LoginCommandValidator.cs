@@ -8,6 +8,9 @@ namespace Application.Authentication.Commands.Login
         {
             RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName is required.");
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
+
+            // put LoginCommand validation code here
+            //RuleFor(x => x).Must()
         }
     }
 }

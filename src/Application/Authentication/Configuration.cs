@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Application.Authentication
@@ -31,6 +32,7 @@ namespace Application.Authentication
 
             services.AddSingleton(tokenValidationParameters);
             services.AddScoped<TokenGenerator>();
+            services.AddScoped<JwtSecurityTokenHandler>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<GuitarsContext>();
@@ -69,7 +71,7 @@ namespace Application.Authentication
 
             services.AddHttpContextAccessor();
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthenticationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthenticationBehavior<,>));            
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();

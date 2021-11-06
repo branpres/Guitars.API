@@ -14,7 +14,7 @@ namespace Application.Authentication
     {
         private readonly IConfiguration _configuration;
         private readonly GuitarsContext _guitarsContext;
-        private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         private const int TOKEN_EXPIRE_TIME_IN_MINUTES = 30;
         private const int REFRESH_TOKEN_EXPIRE_TIME_IN_MINUTES = 120;
@@ -22,17 +22,15 @@ namespace Application.Authentication
         public TokenGenerator(
             IConfiguration configuration,
             GuitarsContext guitarsContext,
-            TokenValidationParameters tokenValidationParameters)
+            JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _configuration = configuration;
             _guitarsContext = guitarsContext;
-            _tokenValidationParameters = tokenValidationParameters;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
         public async Task<TokenGenerationResult> GenerateTokenAsync(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
             var jwtConfiguration = _configuration.GetSection("JwtConfiguration");
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfiguration["Key"]));
@@ -46,8 +44,8 @@ namespace Application.Authentication
                 Issuer = jwtConfiguration["Issuer"]
             };
 
-            var token = jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
-            var jwt = jwtSecurityTokenHandler.WriteToken(token);
+            var token = _jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
+            var jwt = _jwtSecurityTokenHandler.WriteToken(token);
 
             var authToken = new AuthToken
             {
@@ -65,12 +63,10 @@ namespace Application.Authentication
             };
         }
 
-        public async Task<TokenGenerationResult> RefreshTokenAsync(string jwt, CancellationToken cancellationToken)
+        public async Task<TokenGenerationResult> RefreshTokenAsync(string jwt, TokenValidationParameters tokenValidationParameters, CancellationToken cancellationToken)
         {
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
             // validate current token
-            var claimsPrincipal = jwtSecurityTokenHandler.ValidateToken(jwt, _tokenValidationParameters, out var validatedToken);
+            var claimsPrincipal = _jwtSecurityTokenHandler.ValidateToken(jwt, tokenValidationParameters, out var validatedToken);
 
             if (validatedToken is JwtSecurityToken jwtSecurityToken)
             {

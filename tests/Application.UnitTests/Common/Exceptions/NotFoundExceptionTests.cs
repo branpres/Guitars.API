@@ -6,11 +6,6 @@ namespace Application.UnitTests.Common.Exceptions
 {
     public class NotFoundExceptionTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void CustomConstructorReturnsAppropriateMessage()
         {
