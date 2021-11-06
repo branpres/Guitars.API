@@ -11,7 +11,7 @@ namespace IntegrationTests
     public class AuthorizationTests : TestBase
     {
         [Test]
-        public async Task UserWithReadPolicyShouldBeAuthorizedToAccessResource()
+        public async Task ShouldBeAuthorizedToAccessResourceWithReadPolicy()
         {
             // Arrange
             var client = await GetHttpClientForReadOnlyUserAsync();
@@ -24,7 +24,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task UserWithReadPolicyShouldBeForbiddenFromResource()
+        public async Task ShouldBeForbiddenFromResourceWithReadPolicy()
         {
             // Arrange
             var client = await GetHttpClientForReadOnlyUserAsync();
@@ -45,7 +45,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task AccessToResourceShouldBeUnauthorized()
+        public async Task ShouldBeUnauthorizedToAccessResource()
         {
             // Arrange
             var factory = new WebApplicationFactory<Program>();

@@ -29,7 +29,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task ShouldReceiveBadRequestWithEmptyLoginAsync()
+        public async Task ShouldReceiveBadRequestWithNoLoginCredentialsAsync()
         {
             // Arrange
             var factory = new WebApplicationFactory<Program>();
