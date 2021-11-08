@@ -19,7 +19,7 @@ namespace Guitars.API.OldWay.Controllers
 
         [Authorize(Policy = Constants.Policies.READ)]
         [HttpGet]
-        public async Task<IActionResult> ReadGuitarsAsync(string filter = "", int pageIndex = -1, int pageSize = -1)
+        public async Task<IActionResult> ReadGuitarsAsync(string? filter = null, int pageIndex = -1, int pageSize = -1)
         {
             var guitarsVM = await _mediator.Send(new ReadGuitarsQuery(filter, pageIndex == -1 ? null : pageIndex, pageSize == -1 ? null : pageSize));
             return Ok(guitarsVM);

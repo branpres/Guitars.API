@@ -14,7 +14,7 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapGuitarsEndpoints(this WebApplication app)
         {
-            app.MapPost("/guitars", CreateGuitarAsync);//.RequireAuthorization(Constants.Policies.WRITE);
+            app.MapPost("/guitars", CreateGuitarAsync).RequireAuthorization(Constants.Policies.WRITE);
             app.MapGet("/guitars/{id}", ReadGuitarAsync).RequireAuthorization(Constants.Policies.READ);
             app.MapGet("/guitars", ReadGuitarsAsync).RequireAuthorization(Constants.Policies.READ);
             app.MapPut("/guitars", UpdateGuitarAsync).RequireAuthorization(Constants.Policies.WRITE);
@@ -35,7 +35,7 @@ namespace Guitars.API.Endpoints
             return Results.Ok(guitarDto);
         }
 
-        internal async static Task<IResult> ReadGuitarsAsync(ISender mediator, string filter = "", int pageIndex = -1, int pageSize = -1)
+        internal async static Task<IResult> ReadGuitarsAsync(ISender mediator, string? filter = null, int pageIndex = -1, int pageSize = -1)
         {
             var guitarsVM = await mediator.Send(new ReadGuitarsQuery(filter, pageIndex == -1 ? null : pageIndex, pageSize == -1 ? null : pageSize));
             return Results.Ok(guitarsVM);

@@ -10,8 +10,6 @@ namespace IntegrationTests
 {
     public abstract class TestBase
     {
-        protected GuitarsWebApplicationFactory _guitarsWebApplicationFactory;
-
         [SetUp]
         public async Task ResetCheckpoint()
         {
@@ -20,7 +18,7 @@ namespace IntegrationTests
 
         public static async Task<HttpClient> GetHttpClientAsync()
         {
-            var factory = new GuitarsWebApplicationFactory();
+            var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // using admin because it doesn't matter who is logged in as authentication is not what we're testing here
@@ -36,7 +34,7 @@ namespace IntegrationTests
 
         public static async Task<HttpClient> GetHttpClientForReadOnlyUserAsync()
         {
-            var factory = new GuitarsWebApplicationFactory();
+            var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // using admin because it doesn't matter who is logged in as authentication is not what we're testing here

@@ -15,7 +15,7 @@ namespace IntegrationTests
         public async Task ShouldLoginAsync()
         {
             // Arrange
-            var factory = new GuitarsWebApplicationFactory();
+            var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // Act
@@ -32,7 +32,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveBadRequestWithNoLoginCredentialsAsync()
         {
             // Arrange
-            var factory = new GuitarsWebApplicationFactory();
+            var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // Act
@@ -46,7 +46,7 @@ namespace IntegrationTests
         public async Task ShouldReceiveBadRequestWithInvalidLoginAsync()
         {
             // Arrange
-            var factory = new GuitarsWebApplicationFactory();
+            var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // Act
