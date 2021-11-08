@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Extensions", "tests\Tests.Extensions\Tests.Extensions.csproj", "{733DB200-77D1-4738-BF63-E8BA48A714AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{50B69EE1-9679-4DF5-A848-0C24D265FBD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{50B69EE1-9679-4DF5-A848-0C24D265FBD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guitars.API.OldWay", "src\Guitars.API.OldWay\Guitars.API.OldWay.csproj", "{07A98EB5-6156-4092-8E93-F99C46A3C952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50B69EE1-9679-4DF5-A848-0C24D265FBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A98EB5-6156-4092-8E93-F99C46A3C952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A98EB5-6156-4092-8E93-F99C46A3C952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A98EB5-6156-4092-8E93-F99C46A3C952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A98EB5-6156-4092-8E93-F99C46A3C952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{0293601C-AC02-4E1A-A481-3629B20F9AE8} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
 		{733DB200-77D1-4738-BF63-E8BA48A714AE} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
 		{50B69EE1-9679-4DF5-A848-0C24D265FBD3} = {9A6C9F9C-0340-4B00-B64F-C554DA6317E1}
+		{07A98EB5-6156-4092-8E93-F99C46A3C952} = {3A9E10DD-4DC8-4A11-B790-45ED76A14D4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97E78164-7320-48E2-91AD-E1B0A06CE4CE}

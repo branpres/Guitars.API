@@ -25,7 +25,8 @@ namespace IntegrationTests
             _checkpoint = new MySqlCheckpoint
             {
                 DbAdapter = DbAdapter.MySql,
-                TablesToIgnore = new[] { "__EFMigrationsHistory" }
+                TablesToIgnore = new[] { "__EFMigrationsHistory" },
+                SchemasToInclude = new[] { "guitarsTest" }
             };
 
             // connect to test database

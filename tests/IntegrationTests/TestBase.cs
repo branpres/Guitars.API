@@ -10,8 +10,6 @@ namespace IntegrationTests
 {
     public abstract class TestBase
     {
-        protected WebApplicationFactory<Program> _webApplicationFactory;
-
         [SetUp]
         public async Task ResetCheckpoint()
         {

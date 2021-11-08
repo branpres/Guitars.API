@@ -1,27 +1,32 @@
 ﻿using Application.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
 namespace Application.Data.Authentication
 {
-    public static class IdentityDbContextSeed
+    public static class IdentitySeed
     {
-        public static async Task SeedAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Seed(this IServiceProvider services)
         {
-            await SeedRoleAsync(roleManager, Constants.Roles.ADMIN);
-            await SeedRoleAsync(roleManager, Constants.Roles.READ_ONLY_USER);
+            using var scope = services.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.REFRESH_TOKEN);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.CREATE_GUITAR);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.READ_GUITAR);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.UPDATE_GUITAR);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.DELETE_GUITAR);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.STRING_GUITAR);
-            await SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.TUNE_GUITAR);
+            SeedRoleAsync(roleManager, Constants.Roles.ADMIN).GetAwaiter().GetResult();
+            SeedRoleAsync(roleManager, Constants.Roles.READ_ONLY_USER).GetAwaiter().GetResult();
 
-            await SeedClaimAsync(roleManager, Constants.Roles.READ_ONLY_USER, Constants.Claims.READ_GUITAR);
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.REFRESH_TOKEN).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.CREATE_GUITAR).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.READ_GUITAR).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.UPDATE_GUITAR).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.DELETE_GUITAR).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.STRING_GUITAR).GetAwaiter().GetResult();
+            SeedClaimAsync(roleManager, Constants.Roles.ADMIN, Constants.Claims.TUNE_GUITAR).GetAwaiter().GetResult();
 
-            await SeedDefaultUsersAsync(userManager);
+            SeedClaimAsync(roleManager, Constants.Roles.READ_ONLY_USER, Constants.Claims.READ_GUITAR).GetAwaiter().GetResult();
+
+            SeedDefaultUsersAsync(userManager).GetAwaiter().GetResult();
         }
 
         private static async Task SeedRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
