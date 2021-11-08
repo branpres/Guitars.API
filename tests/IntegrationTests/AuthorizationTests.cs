@@ -48,7 +48,7 @@ namespace IntegrationTests
         public async Task ShouldBeUnauthorizedToAccessResource()
         {
             // Arrange
-            var factory = new WebApplicationFactory<Program>();
+            var factory = new GuitarsWebApplicationFactory();
             var client = factory.CreateClient();
 
             // Act

@@ -1,20 +1,18 @@
-using Guitars.API.Endpoints;
 using Application;
 using Application.Authentication;
 using Application.Data;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Application.Data.Authentication;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Guitars.API", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Guitars.API.OldWay", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.ApiKey,
@@ -29,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
-                {                    
+                {
                     Id = "Bearer",
                     Type = ReferenceType.SecurityScheme,
                 }
@@ -52,24 +50,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Guitars.API v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Guitars.API.OldWay v1"));
 }
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
-
-app.UseExceptionHandler("/errors");
-
-app.MapAuthenticationEndpoints();
-app.MapGuitarsEndpoints();
-app.MapErrorEndpoints();
-
-app.Services.ApplyMigrations();
-app.Services.Seed();
+app.MapControllers();
 
 app.Run();
-
-// makes this accessible to WebApplicationFactory
-public partial class Program { }

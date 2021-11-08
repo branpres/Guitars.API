@@ -12,13 +12,13 @@ namespace IntegrationTests
     [SetUpFixture]
     public class TestFixture
     {
-        private static IConfiguration _configuration;
+        //private static IConfiguration _configuration;
         private static Checkpoint _checkpoint;
 
         [OneTimeSetUp]
         public void RunBeforeTests()
         {
-            _configuration = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false).Build();
 
@@ -30,13 +30,17 @@ namespace IntegrationTests
 
             // connect to test database
             var services = new ServiceCollection();
-            services.AddData(_configuration);
+            services.AddData(configuration);
             services.BuildServiceProvider().ApplyMigrations();
         }
 
         public static async Task ResetCheckpoint()
         {
-            await _checkpoint.Reset(_configuration.GetConnectionString("Guitars"));
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false).Build();
+
+            await _checkpoint.Reset(configuration.GetConnectionString("Guitars"));
         }
     }
 

@@ -14,7 +14,7 @@ namespace Guitars.API.Endpoints
     {
         internal static void MapGuitarsEndpoints(this WebApplication app)
         {
-            app.MapPost("/guitars", CreateGuitarAsync).RequireAuthorization(Constants.Policies.WRITE);
+            app.MapPost("/guitars", CreateGuitarAsync);//.RequireAuthorization(Constants.Policies.WRITE);
             app.MapGet("/guitars/{id}", ReadGuitarAsync).RequireAuthorization(Constants.Policies.READ);
             app.MapGet("/guitars", ReadGuitarsAsync).RequireAuthorization(Constants.Policies.READ);
             app.MapPut("/guitars", UpdateGuitarAsync).RequireAuthorization(Constants.Policies.WRITE);
