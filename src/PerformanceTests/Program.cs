@@ -7,8 +7,8 @@ using System.Net.Http.Json;
 // before runing, get the JWT required
 var client = new HttpClient() { BaseAddress = new Uri("https://localhost:7190/guitars") };
 
-var response = await client.PostAsJsonAsync("/authentication/login", new { UserName = "admin", Password = "guitarsAdmin1!" });
-var jwt = await response.Content.ReadFromJsonAsync<string>();
+var response = client.PostAsJsonAsync("/authentication/login", new { UserName = "admin", Password = "guitarsAdmin1!" }).GetAwaiter().GetResult();
+var jwt = response.Content.ReadFromJsonAsync<string>().GetAwaiter().GetResult();
 
 var httpFactory = HttpClientFactory.Create();
 
@@ -27,7 +27,7 @@ IStep CreateStep(string stepName, IClientFactory<HttpClient> httpClientFactory, 
     {
         var client = context.Client;
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-        var response = await context.Client.GetAsync(endpoint, context.CancellationToken);
+        var response = await client.GetAsync(endpoint, context.CancellationToken);
 
         return response.IsSuccessStatusCode
             ? Response.Ok(statusCode: (int)response.StatusCode)
