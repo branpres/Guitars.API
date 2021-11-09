@@ -11,15 +11,16 @@ namespace IntegrationTests
 {
     public class AuthenticationTests : TestBase
     {
-        [Test]
-        public async Task ShouldLoginAsync()
+        [TestCase("admin", "guitarsAdmin1!")]
+        [TestCase("readonlyuser", "guitarsReadonlyuser1!")]
+        public async Task ShouldLoginAsync(string userName, string password)
         {
             // Arrange
             var factory = new WebApplicationFactory<Program>();
             var client = factory.CreateClient();
 
             // Act
-            var loginCommand = new LoginCommand { UserName = "admin", Password = "guitarsAdmin1!" };
+            var loginCommand = new LoginCommand { UserName = userName, Password = password };
             var response = await client.PostAsJsonAsync("/authentication/login", loginCommand);
             var jwt = await response.Content.ReadFromJsonAsync<string>();
 

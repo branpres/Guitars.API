@@ -25,11 +25,13 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
             Assert.IsEmpty(validationResult.Errors);
         }
 
-        [Test]
-        public void ShouldNotValidate()
+        [TestCase(null, null)]
+        [TestCase("test", null)]
+        [TestCase(null, "test")]
+        public void ShouldNotValidate(string make, string model)
         {
             // Arrange
-            var updateGuitarCommand = new UpdateGuitarCommand();
+            var updateGuitarCommand = new UpdateGuitarCommand { Make = make, Model = model };
 
             var validator = new UpdateGuitarCommandValidator();
 
@@ -38,8 +40,6 @@ namespace Application.UnitTests.Features.Guitars.Commands.UpdateGuitar
 
             // Assert
             Assert.IsNotEmpty(validationResult.Errors);
-            Assert.AreEqual("Make is required.", validationResult.Errors[0].ErrorMessage);
-            Assert.AreEqual("Model is required.", validationResult.Errors[1].ErrorMessage);
         }
     }
 }

@@ -24,7 +24,28 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task ShouldBeForbiddenFromResourceWithReadPolicy()
+        public async Task ShouldBeAuthorizedToAccessResourceWithWritePolicy()
+        {
+            // Arrange
+            var client = await GetHttpClientAsync();
+
+            var createGuitarCommand = new CreateGuitarCommand
+            {
+                GuitarType = GuitarType.AcousticElectric,
+                MaxNumberOfStrings = 6,
+                Make = "Taylor",
+                Model = "314-CE"
+            };
+
+            // Act
+            var response = await client.PostAsJsonAsync("/guitars", createGuitarCommand);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Test]
+        public async Task ShouldBeForbiddenFromResource()
         {
             // Arrange
             var client = await GetHttpClientForReadOnlyUserAsync();
