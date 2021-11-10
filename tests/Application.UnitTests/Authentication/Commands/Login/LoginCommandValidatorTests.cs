@@ -6,11 +6,7 @@ public class LoginCommandValidatorTests
     public void ShouldValidate()
     {
         // Arrange
-        var loginCommand = new LoginCommand
-        {
-            UserName = "test",
-            Password = "password"
-        };
+        var loginCommand = new LoginCommand { UserName = "test", Password = "password" };
 
         var validator = new LoginCommandValidator();
 
@@ -21,11 +17,13 @@ public class LoginCommandValidatorTests
         Assert.IsEmpty(validationResult.Errors);
     }
 
-    [Test]
-    public void ShouldNotValidate()
+    [TestCase("", "")]
+    [TestCase("test", "")]
+    [TestCase("", "password")]
+    public void ShouldNotValidate(string userName, string password)
     {
         // Arrange
-        var loginCommand = new LoginCommand();
+        var loginCommand = new LoginCommand { UserName = userName, Password = password };
 
         var validator = new LoginCommandValidator();
 
@@ -34,7 +32,5 @@ public class LoginCommandValidatorTests
 
         // Assert
         Assert.IsNotEmpty(validationResult.Errors);
-        Assert.AreEqual("UserName is required.", validationResult.Errors[0].ErrorMessage);
-        Assert.AreEqual("Password is required.", validationResult.Errors[1].ErrorMessage);
     }
 }

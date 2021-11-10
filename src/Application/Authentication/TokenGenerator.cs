@@ -94,9 +94,9 @@ public class TokenGenerator
     private static List<Claim> GetClaims(ClaimsPrincipal claimsPrincipal)
     {
         var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        {
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
         claims.AddRange(claimsPrincipal.Claims);
 

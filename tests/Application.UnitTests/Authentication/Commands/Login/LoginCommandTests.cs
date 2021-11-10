@@ -1,5 +1,8 @@
 ﻿namespace Application.UnitTests.Authentication.Commands.Login;
 
+/// <summary>
+/// Fail cases unit tested with this class. Integration tests cover being able to login.
+/// </summary>
 public class LoginCommandTests
 {
     [Test]
