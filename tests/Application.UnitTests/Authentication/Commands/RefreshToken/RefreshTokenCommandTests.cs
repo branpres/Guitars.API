@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Application.UnitTests.Authentication.Commands.RefreshToken;
 
-namespace Application.UnitTests.Authentication.Commands.RefreshToken
+internal class RefreshTokenCommandTests
 {
-    internal class RefreshTokenCommandTests
-    {
-    }
 }

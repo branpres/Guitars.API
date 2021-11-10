@@ -1,31 +1,28 @@
-﻿using Domain.Models;
+﻿namespace Application.Features.Guitars.Queries;
 
-namespace Application.Features.Guitars.Queries
+public static class GuitarDtoExtensions
 {
-    public static class GuitarDtoExtensions
+    public static GuitarDto MapToDto(this Guitar guitar)
     {
-        public static GuitarDto MapToDto(this Guitar guitar)
+        return new GuitarDto
         {
-            return new GuitarDto
-            {
-                Id = guitar.Id,
-                GuitarType = (int)guitar.GuitarType,
-                MaxNumberOfStrings = guitar.MaxNumberOfStrings,
-                Make = guitar.Make,
-                Model = guitar.Model,
-                Created = guitar.Created,
-                Updated = guitar.Updated,
-                GuitarStrings = guitar.GuitarStrings
-                    .Select(x => new GuitarStringDto
-                    {
-                        Id = x.Id,
-                        Number = x.Number,
-                        Gauge = x.Gauge,
-                        Tuning = x.Tuning,
-                        Created = x.Created,
-                        Updated = x.Updated
-                    }).ToList()
-            };
-        }
+            Id = guitar.Id,
+            GuitarType = (int)guitar.GuitarType,
+            MaxNumberOfStrings = guitar.MaxNumberOfStrings,
+            Make = guitar.Make,
+            Model = guitar.Model,
+            Created = guitar.Created,
+            Updated = guitar.Updated,
+            GuitarStrings = guitar.GuitarStrings
+                .Select(x => new GuitarStringDto
+                {
+                    Id = x.Id,
+                    Number = x.Number,
+                    Gauge = x.Gauge,
+                    Tuning = x.Tuning,
+                    Created = x.Created,
+                    Updated = x.Updated
+                }).ToList()
+        };
     }
 }

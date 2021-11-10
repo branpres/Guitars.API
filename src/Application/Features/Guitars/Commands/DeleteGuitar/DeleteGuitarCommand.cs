@@ -1,45 +1,38 @@
-﻿using Application.Common.Exceptions;
-using Application.Data;
-using Domain.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿namespace Application.Features.Guitars.Commands.DeleteGuitar;
 
-namespace Application.Features.Guitars.Commands.DeleteGuitar
+public class DeleteGuitarCommand : IRequest
 {
-    public class DeleteGuitarCommand : IRequest
+    public DeleteGuitarCommand(int id)
     {
-        public DeleteGuitarCommand(int id)
-        {
-            Id = id;
-        }
-
-        public int Id { get; private set; }
+        Id = id;
     }
 
-    public class DeleteGuitarCommandHandler : IRequestHandler<DeleteGuitarCommand>
+    public int Id { get; private set; }
+}
+
+public class DeleteGuitarCommandHandler : IRequestHandler<DeleteGuitarCommand>
+{
+    private readonly GuitarsContext _guitarContext;
+
+    public DeleteGuitarCommandHandler(GuitarsContext guitarContext)
     {
-        private readonly GuitarsContext _guitarContext;
+        _guitarContext = guitarContext;
+    }
 
-        public DeleteGuitarCommandHandler(GuitarsContext guitarContext)
+    public async Task<Unit> Handle(DeleteGuitarCommand request, CancellationToken cancellationToken)
+    {
+        var guitar = await _guitarContext.Guitar
+            .Include(x => x.GuitarStrings)
+            .FirstOrDefaultAsync(x => x.Id == request.Id);
+        if (guitar == null)
         {
-            _guitarContext = guitarContext;
+            throw new NotFoundException(nameof(Guitar), request.Id);
         }
 
-        public async Task<Unit> Handle(DeleteGuitarCommand request, CancellationToken cancellationToken)
-        {
-            var guitar = await _guitarContext.Guitar
-                .Include(x => x.GuitarStrings)
-                .FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (guitar == null)
-            {
-                throw new NotFoundException(nameof(Guitar), request.Id);
-            }
+        guitar.IsDeleted = true;
+        guitar.GuitarStrings.ForEach(x => x.IsDeleted = true);
+        await _guitarContext.SaveChangesAsync(cancellationToken);
 
-            guitar.IsDeleted = true;
-            guitar.GuitarStrings.ForEach(x => x.IsDeleted = true);
-            await _guitarContext.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

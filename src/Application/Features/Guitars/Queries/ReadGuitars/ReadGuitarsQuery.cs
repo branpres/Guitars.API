@@ -1,63 +1,55 @@
-﻿using Application.Common.Extensions;
-using Application.Data;
-using Domain.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿namespace Application.Features.Guitars.Queries.ReadGuitars;
 
-namespace Application.Features.Guitars.Queries.ReadGuitars
+public class ReadGuitarsQuery : IRequest<GuitarsVM>
 {
-    public class ReadGuitarsQuery : IRequest<GuitarsVM>
+    public ReadGuitarsQuery(string? filter = null, int? pageIndex = null, int? pageSize = null)
     {
-        public ReadGuitarsQuery(string? filter = null, int? pageIndex = null, int? pageSize = null)
-        {
-            Filter = filter;
-            PageIndex = pageIndex;
-            PageSize = pageSize;
-        }
-
-        public string? Filter { get; private set; }
-
-        public int? PageIndex { get; private set; }
-
-        public int? PageSize { get; private set; }
+        Filter = filter;
+        PageIndex = pageIndex;
+        PageSize = pageSize;
     }
 
-    public class ReadGuitarsQueryHandler : IRequestHandler<ReadGuitarsQuery, GuitarsVM>
+    public string? Filter { get; private set; }
+
+    public int? PageIndex { get; private set; }
+
+    public int? PageSize { get; private set; }
+}
+
+public class ReadGuitarsQueryHandler : IRequestHandler<ReadGuitarsQuery, GuitarsVM>
+{
+    private readonly GuitarsContext _guitarContext;
+
+    public ReadGuitarsQueryHandler(GuitarsContext guitarContext)
     {
-        private readonly GuitarsContext _guitarContext;
+        _guitarContext = guitarContext;
+    }
 
-        public ReadGuitarsQueryHandler(GuitarsContext guitarContext)
+    public async Task<GuitarsVM> Handle(ReadGuitarsQuery request, CancellationToken cancellationToken)
+    {
+        Expression<Func<Guitar, bool>> expression = x => !x.IsDeleted;
+        if (!string.IsNullOrEmpty(request.Filter))
         {
-            _guitarContext = guitarContext;
+            expression = expression.And(x =>
+                x.GuitarType.ToString().Contains(request.Filter)
+                || x.MaxNumberOfStrings.ToString().Contains(request.Filter)
+                || x.Make.Contains(request.Filter)
+                || x.Model.Contains(request.Filter));
         }
 
-        public async Task<GuitarsVM> Handle(ReadGuitarsQuery request, CancellationToken cancellationToken)
+        var queryable = _guitarContext.Guitar.Where(expression);
+
+        if (request.PageIndex != null && request.PageSize != null)
         {
-            Expression<Func<Guitar, bool>> expression = x => !x.IsDeleted;
-            if (!string.IsNullOrEmpty(request.Filter))
-            {
-                expression = expression.And(x =>
-                    x.GuitarType.ToString().Contains(request.Filter)
-                    || x.MaxNumberOfStrings.ToString().Contains(request.Filter)
-                    || x.Make.Contains(request.Filter)
-                    || x.Model.Contains(request.Filter));
-            }
-
-            var queryable = _guitarContext.Guitar.Where(expression);
-
-            if (request.PageIndex != null && request.PageSize != null)
-            {
-                queryable = queryable.Skip(((int)request.PageIndex - 1) * (int)request.PageSize).Take((int)request.PageSize);
-            }
-
-            return new GuitarsVM
-            {
-                Guitars = await queryable
-                    .Include(x => x.GuitarStrings)
-                    .Select(x => x.MapToDto())
-                    .ToListAsync(cancellationToken)
-            };
+            queryable = queryable.Skip(((int)request.PageIndex - 1) * (int)request.PageSize).Take((int)request.PageSize);
         }
+
+        return new GuitarsVM
+        {
+            Guitars = await queryable
+                .Include(x => x.GuitarStrings)
+                .Select(x => x.MapToDto())
+                .ToListAsync(cancellationToken)
+        };
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace Application.Authentication.Exceptions
+﻿namespace Application.Authentication.Exceptions;
+
+public class InvalidLoginException : Exception
 {
-    public class InvalidLoginException : Exception
-    {
-    }
 }

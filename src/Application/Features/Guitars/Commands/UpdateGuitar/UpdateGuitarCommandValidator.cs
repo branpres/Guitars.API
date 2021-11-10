@@ -1,13 +1,10 @@
-﻿using FluentValidation;
+﻿namespace Application.Features.Guitars.Commands.UpdateGuitar;
 
-namespace Application.Features.Guitars.Commands.UpdateGuitar
+public class UpdateGuitarCommandValidator : AbstractValidator<UpdateGuitarCommand>
 {
-    public class UpdateGuitarCommandValidator : AbstractValidator<UpdateGuitarCommand>
+    public UpdateGuitarCommandValidator()
     {
-        public UpdateGuitarCommandValidator()
-        {
-            RuleFor(x => x.Make).NotEmpty().WithMessage("Make is required.");
-            RuleFor(x => x.Model).NotEmpty().WithMessage("Model is required.");
-        }
+        RuleFor(x => x.Make).NotEmpty().WithMessage("Make is required.");
+        RuleFor(x => x.Model).NotEmpty().WithMessage("Model is required.");
     }
 }

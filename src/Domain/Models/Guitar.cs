@@ -1,53 +1,49 @@
-﻿using Domain.Common;
-using Domain.Enums;
-
-namespace Domain.Models
+﻿namespace Domain.Models;
+    
+public class Guitar : ModelBase
 {
-    public class Guitar : ModelBase
+    public Guitar(GuitarType guitarType, int maxNumberOfStrings, string make, string model)
     {
-        public Guitar(GuitarType guitarType, int maxNumberOfStrings, string make, string model)
-        {
-            GuitarType = guitarType;
-            MaxNumberOfStrings = maxNumberOfStrings;
-            Make = make;
-            Model = model;
+        GuitarType = guitarType;
+        MaxNumberOfStrings = maxNumberOfStrings;
+        Make = make;
+        Model = model;
 
-            GuitarStrings = new List<GuitarString>();
+        GuitarStrings = new List<GuitarString>();
+    }
+
+    public GuitarType GuitarType { get; private set; }
+
+    public int MaxNumberOfStrings { get; private set; }
+
+    public string Make { get; set; }
+
+    public string Model { get; set; }
+
+    public List<GuitarString> GuitarStrings { get; private set; }
+
+    public void String(int number, string gauge, string tuning)
+    {
+        var guitarString = GuitarStrings.FirstOrDefault(x => x.Number == number);
+        if (guitarString != null)
+        {
+            guitarString.ReString(gauge, tuning);
         }
-
-        public GuitarType GuitarType { get; private set; }
-
-        public int MaxNumberOfStrings { get; private set; }
-
-        public string Make { get; set; }
-
-        public string Model { get; set; }
-
-        public List<GuitarString> GuitarStrings { get; private set; }
-
-        public void String(int number, string gauge, string tuning)
+        else
         {
-            var guitarString = GuitarStrings.FirstOrDefault(x => x.Number == number);
-            if (guitarString != null)
+            if (GuitarStrings.Count < MaxNumberOfStrings)
             {
-                guitarString.ReString(gauge, tuning);
-            }
-            else
-            {
-                if (GuitarStrings.Count < MaxNumberOfStrings)
-                {
-                    GuitarStrings.Add(new GuitarString(number, gauge, tuning));
-                }
+                GuitarStrings.Add(new GuitarString(number, gauge, tuning));
             }
         }
+    }
 
-        public void Tune(int number, string tuning)
+    public void Tune(int number, string tuning)
+    {
+        var guitarString = GuitarStrings.FirstOrDefault(x => x.Number == number);
+        if (guitarString != null)
         {
-            var guitarString = GuitarStrings.FirstOrDefault(x => x.Number == number);
-            if (guitarString != null)
-            {
-                guitarString.Tune(tuning);
-            }
+            guitarString.Tune(tuning);
         }
     }
 }

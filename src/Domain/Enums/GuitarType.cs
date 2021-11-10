@@ -1,9 +1,8 @@
-﻿namespace Domain.Enums
+﻿namespace Domain.Enums;
+
+public enum GuitarType
 {
-    public enum GuitarType
-    {
-        Acoustic = 1,
-        AcousticElectric = 2,
-        Electric = 3
-    }
+    Acoustic = 1,
+    AcousticElectric = 2,
+    Electric = 3
 }

@@ -1,7 +1,6 @@
-﻿namespace Application.Features.Guitars.Queries
+﻿namespace Application.Features.Guitars.Queries;
+
+public class GuitarsVM
 {
-    public class GuitarsVM
-    {
-        public List<GuitarDto> Guitars { get; set; }
-    }
+    public List<GuitarDto> Guitars { get; set; }
 }

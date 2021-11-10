@@ -1,6 +1,5 @@
-﻿namespace Application.Authentication.Exceptions
+﻿namespace Application.Authentication.Exceptions;
+
+public class UserLockedOutException : Exception
 {
-    public class UserLockedOutException : Exception
-    {
-    }
 }

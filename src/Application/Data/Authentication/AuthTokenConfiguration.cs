@@ -1,13 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿namespace Application.Data.Authentication;
 
-namespace Application.Data.Authentication
+public class AuthTokenConfiguration : IEntityTypeConfiguration<AuthToken>
 {
-    public class AuthTokenConfiguration : IEntityTypeConfiguration<AuthToken>
+    public void Configure(EntityTypeBuilder<AuthToken> builder)
     {
-        public void Configure(EntityTypeBuilder<AuthToken> builder)
-        {
-            builder.HasKey("UserId", "JwtId");
-        }
+        builder.HasKey("UserId", "JwtId");
     }
 }

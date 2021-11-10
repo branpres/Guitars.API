@@ -1,16 +1,13 @@
-﻿using FluentValidation;
+﻿namespace Application.Authentication.Commands.Login;
 
-namespace Application.Authentication.Commands.Login
+public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
-    public class LoginCommandValidator : AbstractValidator<LoginCommand>
+    public LoginCommandValidator()
     {
-        public LoginCommandValidator()
-        {
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName is required.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
+        RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName is required.");
+        RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
 
-            // put LoginCommand validation code here
-            //RuleFor(x => x).Must()
-        }
+        // put LoginCommand validation code here
+        //RuleFor(x => x).Must()
     }
 }

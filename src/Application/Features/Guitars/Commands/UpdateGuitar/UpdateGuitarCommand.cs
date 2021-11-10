@@ -1,41 +1,35 @@
-﻿using Application.Common.Exceptions;
-using Application.Data;
-using Domain.Models;
-using MediatR;
+﻿namespace Application.Features.Guitars.Commands.UpdateGuitar;
 
-namespace Application.Features.Guitars.Commands.UpdateGuitar
+public class UpdateGuitarCommand : IRequest
 {
-    public class UpdateGuitarCommand : IRequest
+    public int Id { get; set; }
+
+    public string Make { get; set; }
+
+    public string Model { get; set; }
+}
+
+public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand>
+{
+    private readonly GuitarsContext _guitarContext;
+
+    public UpdateGuitarCommandHandler(GuitarsContext guitarContext)
     {
-        public int Id { get; set; }
-
-        public string Make { get; set; }
-
-        public string Model { get; set; }
+        _guitarContext = guitarContext;
     }
 
-    public class UpdateGuitarCommandHandler : IRequestHandler<UpdateGuitarCommand>
+    public async Task<Unit> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
     {
-        private readonly GuitarsContext _guitarContext;
-
-        public UpdateGuitarCommandHandler(GuitarsContext guitarContext)
+        var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
+        if (guitar == null)
         {
-            _guitarContext = guitarContext;
+            throw new NotFoundException(nameof(Guitar), request.Id);
         }
 
-        public async Task<Unit> Handle(UpdateGuitarCommand request, CancellationToken cancellationToken)
-        {
-            var guitar = await _guitarContext.Guitar.FindAsync(request.Id);
-            if (guitar == null)
-            {
-                throw new NotFoundException(nameof(Guitar), request.Id);
-            }
+        guitar.Make = request.Make;
+        guitar.Model = request.Model;
+        await _guitarContext.SaveChangesAsync(cancellationToken);
 
-            guitar.Make = request.Make;
-            guitar.Model = request.Model;
-            await _guitarContext.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

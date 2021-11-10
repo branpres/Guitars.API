@@ -1,11 +1,3 @@
-using Guitars.API.Endpoints;
-using Application;
-using Application.Authentication;
-using Application.Data;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Application.Data.Authentication;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
