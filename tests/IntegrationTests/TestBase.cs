@@ -1,51 +1,42 @@
-﻿using Application.Authentication.Commands.Login;
-using Microsoft.AspNetCore.Mvc.Testing;
-using NUnit.Framework;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+﻿namespace IntegrationTests;
 
-namespace IntegrationTests
+public abstract class TestBase
 {
-    public abstract class TestBase
+    [SetUp]
+    public async Task ResetCheckpoint()
     {
-        [SetUp]
-        public async Task ResetCheckpoint()
-        {
-            await TestFixture.ResetCheckpoint();
-        }
+        await TestFixture.ResetCheckpoint();
+    }
 
-        public static async Task<HttpClient> GetHttpClientAsync()
-        {
-            var factory = new WebApplicationFactory<Program>();
-            var client = factory.CreateClient();
+    public static async Task<HttpClient> GetHttpClientAsync()
+    {
+        var factory = new WebApplicationFactory<Program>();
+        var client = factory.CreateClient();
 
-            // using admin because it doesn't matter who is logged in as authentication is not what we're testing here
-            // although this by nature does, in fact, test logging in as admin
-            var loginCommand = new LoginCommand { UserName = "admin", Password = "guitarsAdmin1!" };
-            var response = await client.PostAsJsonAsync("/authentication/login", loginCommand);
-            var jwt = await response.Content.ReadFromJsonAsync<string>();
+        // using admin because it doesn't matter who is logged in as authentication is not what we're testing here
+        // although this by nature does, in fact, test logging in as admin
+        var loginCommand = new LoginCommand { UserName = "admin", Password = "guitarsAdmin1!" };
+        var response = await client.PostAsJsonAsync("/authentication/login", loginCommand);
+        var jwt = await response.Content.ReadFromJsonAsync<string>();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
-            return client;
-        }
+        return client;
+    }
 
-        public static async Task<HttpClient> GetHttpClientForReadOnlyUserAsync()
-        {
-            var factory = new WebApplicationFactory<Program>();
-            var client = factory.CreateClient();
+    public static async Task<HttpClient> GetHttpClientForReadOnlyUserAsync()
+    {
+        var factory = new WebApplicationFactory<Program>();
+        var client = factory.CreateClient();
 
-            // using admin because it doesn't matter who is logged in as authentication is not what we're testing here
-            // although this by nature does, in fact, test logging in as admin
-            var loginCommand = new LoginCommand { UserName = "readonlyuser", Password = "guitarsReadonlyuser1!" };
-            var response = await client.PostAsJsonAsync("/authentication/login", loginCommand);
-            var jwt = await response.Content.ReadFromJsonAsync<string>();
+        // using admin because it doesn't matter who is logged in as authentication is not what we're testing here
+        // although this by nature does, in fact, test logging in as admin
+        var loginCommand = new LoginCommand { UserName = "readonlyuser", Password = "guitarsReadonlyuser1!" };
+        var response = await client.PostAsJsonAsync("/authentication/login", loginCommand);
+        var jwt = await response.Content.ReadFromJsonAsync<string>();
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
-            return client;
-        }
+        return client;
     }
 }
