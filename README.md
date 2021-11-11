@@ -17,4 +17,5 @@ Technologies for Tests used:
 NUnit\
 Moq\
 MockQueryable.Moq\
-Respawn (for integration tests)
+Respawn (for integration tests)\
+NBomber (for performance tests)
