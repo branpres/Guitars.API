@@ -1,4 +1,5 @@
 ﻿global using Application.Authentication;
+global using Application.Authentication.Behaviors;
 global using Application.Authentication.Commands.Login;
 global using Application.Authentication.Commands.Logout;
 global using Application.Authentication.Exceptions;
@@ -16,6 +17,7 @@ global using Application.Features.Guitars.Queries.ReadGuitars;
 global using Domain.Enums;
 global using Domain.Models;
 global using FluentValidation;
+global using MediatR;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.Extensions.Configuration;
@@ -30,3 +32,4 @@ global using System.Security.Claims;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using Tests.Extensions;
+global using Application.Authentication.Commands.RefreshToken;
