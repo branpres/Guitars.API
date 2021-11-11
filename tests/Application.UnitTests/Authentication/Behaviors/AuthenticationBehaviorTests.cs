@@ -17,7 +17,7 @@ public class AuthenticationBehaviorTests
         var signInManager = AuthenticationTestsHelper.GetMockedSignInManager();
         var authenticationBehavior = new AuthenticationBehavior<LogoutCommand, Unit>(contextAccessor.Object, guitarsContext.Object);
 
-        // Assert
+        // Act and Assert
         Assert.ThrowsAsync<TokenValidationException>(() => authenticationBehavior.Handle(new LogoutCommand(), new CancellationToken(), async () => { return Unit.Value; }));
     }
 
@@ -32,7 +32,7 @@ public class AuthenticationBehaviorTests
         var signInManager = AuthenticationTestsHelper.GetMockedSignInManager();
         var authenticationBehavior = new AuthenticationBehavior<LogoutCommand, Unit>(contextAccessor.Object, guitarsContext.Object);
 
-        // Assert
+        // Act and Assert
         Assert.ThrowsAsync<TokenValidationException>(() => authenticationBehavior.Handle(new LogoutCommand(), new CancellationToken(), async () => { return Unit.Value; }));
     }
 
@@ -47,7 +47,7 @@ public class AuthenticationBehaviorTests
         var signInManager = AuthenticationTestsHelper.GetMockedSignInManager();
         var authenticationBehavior = new AuthenticationBehavior<LogoutCommand, Unit>(contextAccessor.Object, guitarsContext.Object);
 
-        // Assert
+        // Act and Assert
         Assert.ThrowsAsync<TokenValidationException>(() => authenticationBehavior.Handle(new LogoutCommand(), new CancellationToken(), async () => { return Unit.Value; }));
     }
 
