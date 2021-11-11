@@ -9,19 +9,25 @@ internal class LogoutCommandTests
     public void ShouldThrowTokenValidationException()
     {
         // Arrange
-        var userManager = AuthenticationTestsHelper.GetMockedUserManager();
-        userManager.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(() => null);
-        var signInManager = AuthenticationTestsHelper.GetMockedSignInManager();
-        var guitarsContext = new Mock<GuitarsContext>();
-        var tokenGenerator = AuthenticationTestsHelper.GetMockedTokenGenerator(guitarsContext);
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+        var contextAccessor = new Mock<IHttpContextAccessor>();
+        contextAccessor.Setup(x => x.HttpContext.User).Returns(claimsPrincipal);
 
-        var loginCommand = new LoginCommand { UserName = "test", Password = "password" };
-        var loginCommandHandler = new LoginCommandHandler(userManager.Object, signInManager.Object, guitarsContext.Object, tokenGenerator.Object);
+        var signInManager = AuthenticationTestsHelper.GetMockedSignInManager();
+        var authTokensDbSet = new List<AuthToken>().AsQueryable().BuildMockDbSet();
+        var guitarsContext = new Mock<GuitarsContext>();
+        guitarsContext.Setup(x => x.AuthToken).Returns(authTokensDbSet.Object);
+
+        var logoutCommandHandler = new LogoutCommandHandler(contextAccessor.Object, signInManager.Object, guitarsContext.Object);
 
         // Act
-        Task loginCommandHandlerDelegate = loginCommandHandler.Handle(loginCommand, new CancellationToken());
+        Task logoutCommandHandlerDelegate = logoutCommandHandler.Handle(new LogoutCommand(), new CancellationToken());
 
         // Assert
-        Assert.ThrowsAsync<InvalidLoginException>(() => loginCommandHandlerDelegate);
+        Assert.ThrowsAsync<TokenValidationException>(() => logoutCommandHandlerDelegate);
     }
 }
