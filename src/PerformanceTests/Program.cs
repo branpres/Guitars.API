@@ -18,9 +18,7 @@ var stepMinimalAPI = CreateStep("minimalAPI", httpFactory, "https://localhost:71
 var scenarioController = CreateScenario("controller", stepController, 10, TimeSpan.FromSeconds(60));
 var scenarioMinimalAPI = CreateScenario("minimalAPI", stepMinimalAPI, 10, TimeSpan.FromSeconds(60));
 
-NBomberRunner
-    .RegisterScenarios(scenarioController, scenarioMinimalAPI)
-    .Run();
+NBomberRunner.RegisterScenarios(scenarioController, scenarioMinimalAPI).Run();
 
 IStep CreateStep(string stepName, IClientFactory<HttpClient> httpClientFactory, string endpoint) =>
     Step.Create(stepName, httpClientFactory, async context =>
